@@ -1,0 +1,100 @@
+/* main, .content {
+	background-color: #242730;
+} */
+
+.data-type {
+	font-size: 0.8em
+}
+
+.ticks {
+    position: absolute;
+    /* background-color: lightgrey; */
+    width: 1px;
+    height: 10px;
+    display: inline-block;
+}
+.tagcloud {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.tagcloud span,
+.tagcloud > i {
+	display: inline-block;
+	margin: 0.125rem;
+	padding: 0.4375rem;
+	/* background: #29323C; */
+	border: 1px solid rgb(72, 87, 104);
+  transition: all 0.1s ease-in-out;
+  border-radius: 1rem;
+}
+
+.tagcloud .sub {
+	/* background: rgb(3, 4, 5); */
+}
+
+.tagcloud > span:hover,
+.tagcloud > span:focus,
+.unselect-variable:hover,
+.unselect-variable:focus {
+	/* background: rgb(33, 47, 63); */
+	/* color: white; */
+	transform: scale(1.1);
+}
+
+.color-picker-container {
+  margin-bottom: 15px;
+  height: 50px;
+}
+.color-box {
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin: 5px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.tagcloud > i {
+  border: none
+}
+
+.unselect-variable {
+  width: 30px; 
+  text-align: center;
+}
+
+.searchField {
+  max-width: 320px;
+}
+
+.visArea {
+  max-width: 640px;
+  min-width: 320px;
+}
+
+/* hard coded for theming*/
+.rv-discrete-color-legend-item__title {
+  color: lightgray;
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+
+  /*
+    Introduced in IE 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .searchField, .visArea {
+    max-width: 90%;
+  }
+}
+
