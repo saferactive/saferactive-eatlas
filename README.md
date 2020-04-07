@@ -30,7 +30,7 @@ library(geoplumber)
 gp_build()
 ```
 
-  - you will need a Mapbox API key (will see if we can remove this) in
+  - if you liket to use Mapbox tiles, you can use a Mapbox API key in
     `.env.local` file using variable name:
     `REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
 
