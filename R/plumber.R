@@ -57,33 +57,6 @@ all_geojson <- function(res){
   res
 }
 
-
-
-#' get a subset of results depending on a bbox provided
-#' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<xmax:double>/
-#' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<ymax:double>
-#'
-subs_geojson <- function(res, xmin, ymin, xmax, ymax){
-  res$headers$`Content-type` <- "application/json"
-  if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
-     !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
-    cat(c(xmin, ymin, xmax, ymax))
-
-    bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
-    cat(bbx)
-    cat(length(accidents))
-    subset <-  sf::st_crop(accidents, bbx) # bbox only
-    subset_geojson <-  geojsonsf::sf_geojson(subset)
-    print(subset)
-    print(subset_geojson)
-    res$body <- subset_geojson
-  } else {
-    res$body <- accidents_geojson
-  }
-  res
-}
-
-
 #' Tell plumber where our public facing directory is to SERVE.
 #' No need to map / to the build or public index.html. This will do.
 #'
