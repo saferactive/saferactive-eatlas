@@ -44,8 +44,11 @@ swagger <- function(req, res){
   plumber::include_html(fname, res)
 }
 
+# write geojson
 casualtiese = readRDS(main.file)
-casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
+sf::st_write(casualtiese, "cas.geojson")
+casualtiese_geojson = readLines("cas.geojson")
+# casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
 
 #' @get /api/stats19
 all_geojson <- function(res){
