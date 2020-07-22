@@ -15,31 +15,31 @@ npm start
 
 The frontend is a [`create-react-app`](https://create-react-app.dev/docs/getting-started/) (CRA) so all the standard commands of CRA appliees.
 
-### R 
+### full stack 
 The application is a [geopumber](https://github.com/ATFutures/geoplumber) app. That means it is an R powered backend API (think Flask in Python) and a ReactJS front end.
 
-To build the frontend, from an R console:
+To build the frontend if never built before, from an R console:
 ```{r, eval=FALSE}
 library(geoplumber)
 gp_build()
 ```
 
-* if you liket to use Mapbox tiles, you can use a Mapbox API key in `.env.local` file using variable name:
-`REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
-
-* in production its better to change the `PRD_URL` in the `Constants.js` file.
-
 Then you can run
 ```{r, eval=FALSE}
 # install latest from github
 library(geoplumber) 
-# use the PRD_URL in src/Constants.js
-gp_plumb(host = "0.0.0.0", port = 80) 
+gp_plumb() 
 ```
 
-or just run the front using (without any data loaded from local server): `npm i & npm start`
-
 visit `localhost:8000`
+
+OR you could `Rscript run.R`
+
+
+* if you like to use Mapbox tiles, you can use a Mapbox API key in `.env.local` file using variable name:
+`REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
+
+* in production one must change the `PRD_URL` in the `Constants.js` file and *use Docker*.
 
 ### Docker for production
 
