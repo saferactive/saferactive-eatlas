@@ -1,4 +1,4 @@
-packages <- c("sf", "curl")
+packages <- c("sf", "geojsonsf", "curl")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
 }
@@ -44,11 +44,8 @@ swagger <- function(req, res){
   plumber::include_html(fname, res)
 }
 
-# write geojson
 casualtiese = readRDS(main.file)
-sf::st_write(casualtiese, "cas.geojson")
-casualtiese_geojson = readLines("cas.geojson")
-# casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
+casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
 
 #' @get /api/stats19
 all_geojson <- function(res){
@@ -56,6 +53,33 @@ all_geojson <- function(res){
   res$body <- casualtiese_geojson
   res
 }
+
+
+
+#' get a subset of results depending on a bbox provided
+#' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<xmax:double>/
+#' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<ymax:double>
+#'
+subs_geojson <- function(res, xmin, ymin, xmax, ymax){
+  res$headers$`Content-type` <- "application/json"
+  if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
+     !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
+    cat(c(xmin, ymin, xmax, ymax))
+
+    bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
+    cat(bbx)
+    cat(length(accidents))
+    subset <-  sf::st_crop(accidents, bbx) # bbox only
+    subset_geojson <-  geojsonsf::sf_geojson(subset)
+    print(subset)
+    print(subset_geojson)
+    res$body <- subset_geojson
+  } else {
+    res$body <- accidents_geojson
+  }
+  res
+}
+
 
 #' Tell plumber where our public facing directory is to SERVE.
 #' No need to map / to the build or public index.html. This will do.
