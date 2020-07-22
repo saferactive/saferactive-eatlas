@@ -24,7 +24,9 @@ gp_build()
 library(geoplumber) 
 gp_plumb()
 ```
-Visit `http://localhost:8000`.
+Visit `http://localhost:8000` and you should see something like this (from clean clone):
+
+<img alt="Screenshot 2020-07-22 at 17 22 59" src="https://user-images.githubusercontent.com/408568/88201918-03167c80-cc40-11ea-8f45-371963a92e19.png" width="100%" />
 
 If the default browser tab opened and not loading, reload and it must work. That is an issue for package `geoplumber` to deal with.
 
