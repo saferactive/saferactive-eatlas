@@ -1,3 +1,10 @@
+packages <- c("sf", "curl")
+if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
+}
+
+lapply(packages, library, character.only = TRUE)
+
 if(is.null(curl::nslookup("r-project.org", error = FALSE))) {
   stop(message(
     "No connection",
@@ -5,16 +12,9 @@ if(is.null(curl::nslookup("r-project.org", error = FALSE))) {
     "Please re-run when you are connected."
   ))
 }
-packages <- c("sf", "geojsonsf", "osmdata", "curl")
 
 main.file <- "casualties_active_london.Rds"
 github <- "https://github.com/saferactive/saferactiveshiny/releases/download/0.0.2"
-
-if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
-}
-
-lapply(packages, library, character.only = TRUE)
 
 if(!file.exists(main.file)) {
   download.file(
