@@ -70,7 +70,9 @@ Repo contains Dockerfile for production. This is again WIP.
 # Dockerfile manages your npm/React build steps
 # REACT_APP_MAPBOX_ACCESS_TOKEN is required but app should run
 docker build -t eatlas .
-# note: here we bind internal 8000 to external (host machine)'s 8001. The reason for internal 8000 is in the Dockerfile we use 8000 as the plumber port. It is your choice how you want to do this.
+# note: here we bind internal 8000 to external (host machine)'s 8001.
+# The reason for internal 8000 is in the Dockerfile we use 8000 as the plumber port. 
+# It is your choice how you want to do this.
 docker run -d -p 8000:8001 --name eatlas eatlas
 ```
 
