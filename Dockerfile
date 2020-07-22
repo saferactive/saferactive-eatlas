@@ -9,6 +9,8 @@ RUN apt-get update \
 		vim-tiny \
 		wget \
 		ca-certificates \
+    apt-transport-https \
+    ca-certificates \ 
     && add-apt-repository -y "ppa:marutter/rrutter" \
 	  && add-apt-repository -y "ppa:marutter/c2d4u" \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
