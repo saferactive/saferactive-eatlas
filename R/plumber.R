@@ -86,3 +86,6 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
 #'
 #' @assets ./build /
 list()
+
+#' @assets ./public /
+list()

@@ -96,7 +96,7 @@ export default class Tooltip extends React.Component {
         }
       })
       // separate the severity into [[],[]] arrays
-      severity_keys = Array.from(new Set(severity_data.map(e => e.x)));
+      severity_keys = Array.from(new Set(severity_data.map(e => e.x))).filter(Boolean);
       const severity_by_year = propertyCountByProperty(hoveredObject.points,
         "accident_severity", severity_keys, "date");
       // now turn it into [[],[]]
