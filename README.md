@@ -12,6 +12,12 @@ npm i # or yarn
 npm start
 ```
 
+<script type="text/javascript">
+npm i # or yarn
+# and run
+npm start
+</script>
+
 This is what you should see at `localhost:3000`:
 <img src="https://user-images.githubusercontent.com/1825120/88171123-b9656c00-cc16-11ea-8aed-bdd56fa8d17e.png" width="100%" />
 The frontend is a
@@ -49,11 +55,9 @@ OR you could `Rscript run.R` which uses the same port and host values.
 
 OR you could `Rscript run.R`
 
-Pleasee note:
-
-  - if you like to use Mapbox tiles, you can use a Mapbox API key in
-    `.env.local` file using variable name:
-    `REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
+Pleasee note: \* if you like to use Mapbox tiles, you can use a Mapbox
+API key in `.env.local` file using variable name:
+`REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
 
   - in production one must change the `PRD_URL` in the `Constants.js`
     file and *use Docker*.
@@ -66,7 +70,7 @@ Repo contains Dockerfile for production. This is again WIP.
 # Dockerfile manages your npm/React build steps
 # REACT_APP_MAPBOX_ACCESS_TOKEN is required but app should run
 docker build -t eatlas .
-# then bind plumber's default 8000 port to any of your choice
+# note: here we bind internal 8000 to external (host machine)'s 8001. The reason for internal 8000 is in the Dockerfile we use 8000 as the plumber port. It is your choice how you want to do this.
 docker run -d -p 8000:8001 --name eatlas eatlas
 ```
 

@@ -37,11 +37,9 @@ notice we bind the default port of 8000 to :80 to match what is in `Constants.js
 
 OR you could `Rscript run.R` which uses the same port and host values.
 
-Pleasee note:
-
 OR you could `Rscript run.R`
 
-
+Pleasee note:
 * if you like to use Mapbox tiles, you can use a Mapbox API key in `.env.local` file using variable name:
 `REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
 
@@ -55,7 +53,7 @@ Repo contains Dockerfile for production. This is again WIP.
 # Dockerfile manages your npm/React build steps
 # REACT_APP_MAPBOX_ACCESS_TOKEN is required but app should run
 docker build -t eatlas .
-# then bind plumber's default 8000 port to any of your choice
+# note: here we bind internal 8000 to external (host machine)'s 8001. The reason for internal 8000 is in the Dockerfile we use 8000 as the plumber port. It is your choice how you want to do this.
 docker run -d -p 8000:8001 --name eatlas eatlas
 ````
 Use your favourite document server (nginx for example) to proxy requets (more later hopefully).
