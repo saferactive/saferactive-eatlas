@@ -37,12 +37,19 @@ Then you can run
 ``` r
 # install latest from github
 library(geoplumber) 
-gp_plumb() 
+gp_plumb(host = "0.0.0.0", port = 80)
 ```
 
-visit `localhost:8000`
+notice we bind the default port of 8000 to :80 to match what is in
+`Constants.js` as production URL because we are using the `build`
+folder, you can now visit `http://localhost` which is pointing to port
+`80` by default.
+
+OR you could `Rscript run.R` which uses the same port and host values.
 
 OR you could `Rscript run.R`
+
+Pleasee note:
 
   - if you like to use Mapbox tiles, you can use a Mapbox API key in
     `.env.local` file using variable name:

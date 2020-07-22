@@ -30,10 +30,14 @@ Then you can run
 ```{r, eval=FALSE}
 # install latest from github
 library(geoplumber) 
-gp_plumb() 
+gp_plumb(host = "0.0.0.0", port = 80)
 ```
 
-visit `localhost:8000`
+notice we bind the default port of 8000 to :80 to match what is in `Constants.js` as production URL because we are using the `build` folder, you can now visit `http://localhost` which is pointing to port `80` by default.
+
+OR you could `Rscript run.R` which uses the same port and host values.
+
+Pleasee note:
 
 OR you could `Rscript run.R`
 
