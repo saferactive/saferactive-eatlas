@@ -72,7 +72,7 @@ RUN apt-get install -y --no-install-recommends \
 
 # add node/npm
 RUN apt-get -y install curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_11.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
 RUN apt-get -y install nodejs
 
 ADD . /app
