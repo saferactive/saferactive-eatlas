@@ -68,8 +68,8 @@ RUN apt-get update \
     protobuf-compiler \ 
     git
 
-RUN apt-get install -y --no-install-recommends \ 
-    r-cran-devtools r-cran-sf r-cran-plumber r-cran-osmdata
+RUN apt-get install -y -f --no-install-recommends \ 
+    r-cran-devtools r-cran-sf r-cran-plumber
 
 RUN R -e 'install.packages(c("geojsonsf", dependencies=T))'
 # RUN R -e 'devtools::install_github("ATFutures/geoplumber")'
