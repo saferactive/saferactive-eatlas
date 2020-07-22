@@ -47,6 +47,18 @@ Read on for more.
 
 ### Development
 
+#### typical environment
+
+1.  Start background process by running: `Rscript run.R` which starts
+    the backend at `localhost:8000`
+2.  Start front end separately by running: `npm start`
+
+Then use `localhost:3000` as you edit front end. You can use
+`localhost:8000` if you like to see the API endpoints such as
+`localhost:8000/api/stats19`.
+
+#### Front only
+
 The front end is an npm package, so if you do not need the backend,
 having cloned the repo:
 
@@ -68,7 +80,7 @@ The frontend is a
 [`create-react-app`](https://create-react-app.dev/docs/getting-started/)
 (CRA) so all the standard commands of CRA appliees.
 
-### full stack
+#### Full stack
 
 The application is a
 [geopumber](https://github.com/ATFutures/geoplumber) app. That means it
@@ -97,8 +109,6 @@ folder, you can now visit `http://localhost` which is pointing to port
 
 OR you could `Rscript run.R` which uses the same port and host values.
 
-OR you could `Rscript run.R`
-
 Pleasee note: \* if you like to use Mapbox tiles, you can use a Mapbox
 API key in `.env.local` file using variable name:
 `REACT_APP_MAPBOX_ACCESS_TOKEN = 'API_KEY'`
@@ -106,7 +116,7 @@ API key in `.env.local` file using variable name:
   - in production one must change the `PRD_URL` in the `Constants.js`
     file and *use Docker*.
 
-### Docker for production
+## Docker for production
 
 Repo contains Dockerfile for production. This is again WIP.
 
