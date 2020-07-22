@@ -12,7 +12,7 @@ RUN apt-get update \
     && add-apt-repository -y "ppa:marutter/rrutter" \
 	  && add-apt-repository -y "ppa:marutter/c2d4u" \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-    && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu disco-cran35/' \
+    && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/' \
     && apt-get update 
 
 ## Configure default locale, see https://github.com/rocker-org/rocker/issues/19
