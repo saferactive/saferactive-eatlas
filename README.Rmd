@@ -13,6 +13,8 @@ npm i # or yarn
 npm start
 ```
 
+This is what you should see at `localhost:3000`:
+<img src="https://user-images.githubusercontent.com/1825120/88171123-b9656c00-cc16-11ea-8aed-bdd56fa8d17e.png" width="100%" />
 The frontend is a [`create-react-app`](https://create-react-app.dev/docs/getting-started/) (CRA) so all the standard commands of CRA appliees.
 
 ### full stack 
