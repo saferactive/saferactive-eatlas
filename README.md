@@ -1,6 +1,50 @@
 
 <!-- # eAtlas &middot; [![Build Status](https://travis-ci.org/layik/eAtlas.svg)](https://travis-ci.org/layik/eAtlas) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#) -->
 
+### Run locally
+
+This is how we expect you to run this repo:
+
+1.  Clone the repo and change directory into it
+
+<!-- end list -->
+
+``` r
+library(geoplumber)
+gp_is_wd_geoplumber()
+```
+
+    ## [1] TRUE
+
+2.  In R:
+
+<!-- end list -->
+
+``` r
+library(geoplumber)
+gp_build()
+```
+
+3.  Again in R:
+
+<!-- end list -->
+
+``` r
+# install latest from github
+library(geoplumber) 
+gp_plumb(host = "0.0.0.0", port = 80)
+```
+
+At this moment, your `http://localhost` or `http://0.0.0.0`, if nothing
+else is blocking port `80` should be showing something like this
+(assuming no local env or tiles have been added):
+<img alt="Screenshot 2020-07-22 at 13 06 40" src="https://user-images.githubusercontent.com/408568/88174442-35ae7e00-cc1c-11ea-9479-7a93c931e527.png" width="100%" />
+
+If the default browser tab opened and not loading, reload and it must
+work. That is an issue for package `geoplumber` to deal with.
+
+Read on for more.
+
 ### Development
 
 The front end is an npm package, so if you do not need the backend,
