@@ -21,7 +21,6 @@ gp_is_wd_geoplumber()
 <!-- end list -->
 
 ``` r
-library(geoplumber)
 gp_build()
 ```
 
@@ -31,7 +30,6 @@ gp_build()
 
 ``` r
 # install latest from github
-library(geoplumber) 
 gp_plumb()
 ```
 
@@ -90,6 +88,7 @@ end.
 To build the frontend if never built before, from an R console:
 
 ``` r
+remotes::install_github("atfutures/geoplumber")
 library(geoplumber)
 gp_build()
 ```

@@ -9,19 +9,18 @@ output: github_document
 This is how we expect you to run this repo:
 
 1. Clone the repo and change directory into it
+
 ```{r check}
 library(geoplumber)
 gp_is_wd_geoplumber()
 ```
 2. In R:
 ```{r, eval=FALSE}
-library(geoplumber)
 gp_build()
 ```
 3. Again in R:
 ```{r, eval=FALSE}
 # install latest from github
-library(geoplumber) 
 gp_plumb()
 ```
 Visit `http://localhost:8000` and you should see something like this (from clean clone):
@@ -61,6 +60,7 @@ The application is a [geopumber](https://github.com/ATFutures/geoplumber) app. T
 
 To build the frontend if never built before, from an R console:
 ```{r, eval=FALSE}
+remotes::install_github("atfutures/geoplumber")
 library(geoplumber)
 gp_build()
 ```
