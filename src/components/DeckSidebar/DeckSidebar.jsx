@@ -30,6 +30,7 @@ import MultiSelect from '../MultiSelect';
 import AddVIS from '../AddVIS';
 import MultiLinePlot from '../Showcases/MultiLinePlot';
 import Boxplot from '../Boxplot/Boxplot';
+import SwitchData from '../SaferActive/SwitchData';
 // import GenerateUI from '../UI';
 
 const URL = (process.env.NODE_ENV === 'development' ? DEV_URL : PRD_URL);
@@ -78,7 +79,7 @@ export default class DeckSidebar extends React.Component {
    */
   render() {
     const { elevation,
-      radius, all_road_types, year,
+      radius, all_road_types, year, datasetName,
       subsetBoundsChange, multiVarSelect, barChartVariable } = this.state;
     const { onChangeRadius, onChangeElevation,
       onSelectCallback, data, colourCallback, layerStyle,
@@ -126,7 +127,7 @@ export default class DeckSidebar extends React.Component {
         year: "",
         multiVarSelect: {},
         barChartVariable: "road_type",
-        datasetName: urlOrName || this.state.datasetName
+        datasetName: urlOrName || datasetName
       })
     }
     return (
@@ -224,6 +225,13 @@ export default class DeckSidebar extends React.Component {
                   }, dark))
               }
               <hr style={{ clear: 'both' }} />
+              <SwitchData onSelectCallback={(url) => {
+                if (datasetName === url ||
+                  datasetName.endsWith(url)) return;
+                resetState(url);
+                typeof (urlCallback) === 'function'
+                  && urlCallback(url);
+              }} />
               {columnDomain.length > 1 &&
               <Boxplot data={columnDomain}/>}
 

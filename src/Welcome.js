@@ -19,7 +19,7 @@
  */
 import React from 'react';
 import DeckGL from 'deck.gl';
-import MapGL, { NavigationControl, FlyToInterpolator } from 'react-map-gl';
+import MapGL, { NavigationControl, FlyToInterpolator, Source, Layer } from 'react-map-gl';
 import centroid from '@turf/centroid';
 import bbox from '@turf/bbox';
 import _ from 'underscore';
@@ -334,11 +334,11 @@ export default class Welcome extends React.Component {
       }
     }
     if (geomType === "polygon" || geomType === "multipolygon") {
-      const cols = Object.keys(data[0] && data[0].properties && 
+      const cols = Object.keys(data[0] && data[0].properties &&
         data[0].properties);
       // TODO: remove SPENSER
-      const SPENSER = isArray(cols) && cols.length > 0 && 
-      cols[1] === 'GEOGRAPHY_CODE';
+      const SPENSER = isArray(cols) && cols.length > 0 &&
+        cols[1] === 'GEOGRAPHY_CODE';
       if (SPENSER) {
         options.getElevation = d => (isNumber(d.properties[column]) &&
           column !== 'YEAR' && d.properties[column]) || null
@@ -498,9 +498,34 @@ export default class Welcome extends React.Component {
                 this._generateLayer()
               }
             }}
+            onHover={(info, evt) => {
+              // const mapboxFeatures = this.map.queryRenderedFeatures([evt.offsetX, evt.offsetY]);
+              // console.log(info, evt);
+              console.log(this.map.getLayer("vt"))
+              // let sp = this.map.queryRenderedFeatures()[0].properties.spenser;
+              // sp = Object.values(JSON.parse(sp))[0]
+              // const r = [];
+              // while (sp.length) {
+              //     r.push(sp.splice(0, 4));
+              // }
+              // console.log(sp)
+            }}
           >
             {tooltip}
           </DeckGL>
+          {/* <Source
+            id="vt"
+            type="vector"
+            tiles={['http://localhost:8000/tiles/{z}/{x}/{y}.pbf']}>
+            <Layer
+              id="vt"
+              type="fill"
+              source-layer="out20112012"
+              paint={{
+                'fill-opacity': .4,
+                'fill-color': '#007cbf'
+              }} />
+          </Source> */}
         </MapGL>
         <DeckSidebarContainer
           dark={this.props.dark}

@@ -20,20 +20,6 @@ import './App.css';
 const engine = new Styletron();
 
 /**
- * Code splitting.
- * @param {*} props 
- */
-const DUI = (props) => (
-  <DynamicImport load={() => import('./components/DUI')}>
-    {
-      (Component) => Component === null
-        ? <div className="loader" style={{ zIndex: 999 }} />
-        : <Component {...props} />
-    }
-  </DynamicImport>
-)
-
-/**
  * Separate the Header and the main content.
  * Up to this point we are still not using SSR
  */
@@ -48,10 +34,6 @@ function App() {
           <BaseProvider theme={dark ? DarkTheme : LightTheme}>
             <Switch>
               <Route exact path="/" component={(props) => <Welcome 
-              {...props}
-              dark={dark}
-              />} />
-              <Route exact path="/fui" component={(props) => <DUI 
               {...props}
               dark={dark}
               />} />

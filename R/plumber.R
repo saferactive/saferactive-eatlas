@@ -14,13 +14,22 @@ if(is.null(curl::nslookup("r-project.org", error = FALSE))) {
 }
 
 main.file <- "casualties_active_london.Rds"
+rnet.file <- "rnet_walking_london.Rds"
+
 github <- "https://github.com/saferactive/saferactiveshiny/releases/download/0.0.2"
 
 if(!file.exists(main.file)) {
   download.file(
-    file.path(github,
-           main.file),
+    file.path(github, main.file),
     destfile = main.file)
+}
+
+if (!file.exists(rnet.file)) {
+   download.file(
+     file.path("www.github.com/saferactive/saferactive/releases/download/0.1",
+     rnet.file),
+     destfile = rnet.file
+   )
 }
 
 # Enable CORS -------------------------------------------------------------
@@ -47,13 +56,25 @@ swagger <- function(req, res){
 casualtiese = readRDS(main.file)
 casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
 
+#' Serve casualties data
 #' @get /api/stats19
-all_geojson <- function(res){
+cas_geojson <- function(res){
   res$headers$`Content-type` <- "application/json"
   res$body <- casualtiese_geojson
   res
 }
 
+
+walking.rnet = readRDS(rnet.file)
+walking.rnet = geojsonsf::sf_geojson(walking.rnet)
+
+#' Serve rnet data
+#'  @get /api/walking
+rnet_geojson <- function(res){
+  res$headers$`Content-type` <- "application/json"
+  res$body <- walking.rnet
+  res
+}
 
 
 #' get a subset of results depending on a bbox provided

@@ -10,11 +10,6 @@ import { ATILOGO } from '../utils';
 const navs = [
   {
     key: 1,
-    to: "fui",
-    title: "DUI"
-  },
-  {
-    key: 2,
     to: "about",
     title: "About"
   },
