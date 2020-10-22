@@ -128,45 +128,45 @@ export default class Welcome extends React.Component {
 
   componentDidMount() {
     this._fetchAndUpdateState()
-    this.map.on("load", (e) => {
+    this.map && this.map.on("load", (e) => {
       e.target.addSource('vt', {
-      'type': 'vector',
-      'tiles': [
-        'http://localhost:8000/tiles/{z}/{x}/{y}.pbf'
-      ],
-      'minzoom': 0,
-      'maxzoom': 11
-    });
-    e.target.addLayer(
-      {
-        'id': 'vt',
-        'type': 'line',
-        'source': 'vt',
-        'source-layer': 'london_cyipt',
-        'layout': {
-          'line-cap': 'round',
-          'line-join': 'round'
-        },
-        'paint': {
-          // 'line-opacity': 0.6,
-          'line-color': [
-            'match',
-            ['get', 'bikeCasSlight'],
-            0,
-            '#fbb03b',
+        'type': 'vector',
+        'tiles': [
+          'http://localhost:8000/tiles/{z}/{x}/{y}.pbf'
+        ],
+        'minzoom': 0,
+        'maxzoom': 11
+      });
+      e.target.addLayer(
+        {
+          'id': 'vt',
+          'type': 'line',
+          'source': 'vt',
+          'source-layer': 'london_cyipt',
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
+          'paint': {
+            // 'line-opacity': 0.6,
+            'line-color': [
+              'match',
+              ['get', 'bikeCasSlight'],
+              0,
+              '#fbb03b',
             /* other */ '#ccc'
             ],
-          'line-width': [
-            'match',
-            ['get', 'bikeCasSlight'],
-            0,
-            2,
+            'line-width': [
+              'match',
+              ['get', 'bikeCasSlight'],
+              0,
+              2,
             /* other */ 1
             ]
-        }
-      },
-      'waterway-label'
-    )
+          }
+        },
+        'waterway-label'
+      )
     })
   }
 

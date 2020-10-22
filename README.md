@@ -1,6 +1,10 @@
 
 <!-- # eAtlas &middot; [![Build Status](https://travis-ci.org/layik/eAtlas.svg)](https://travis-ci.org/layik/eAtlas) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#) -->
 
+This is a [geoplumber](https://github.com/ATFutures/geoplumber) app with
+scripts to run either as backend only, frontend only or as a Docker
+image for production.
+
 ### Run locally
 
 This is how we expect you to run this repo:
@@ -34,7 +38,8 @@ gp_plumb()
 ```
 
 Visit `http://localhost:8000` and you should see something like this
-(from clean clone):
+(from clean
+clone):
 
 <img alt="Screenshot 2020-07-22 at 17 22 59" src="https://user-images.githubusercontent.com/408568/88201918-03167c80-cc40-11ea-8f45-371963a92e19.png" width="100%" />
 

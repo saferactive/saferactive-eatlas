@@ -43,15 +43,6 @@ cors <- function(res) {
 }
 # TODO: option to remove above CORS
 
-#' @section TODO:
-#' The plumber endpoint should not be there. Currently mapping React build to /
-#' at assets causes the swagger endpoint to be 404. Support is limited.
-#'
-#' @get /__swagger__/
-swagger <- function(req, res){
-  fname <- system.file("swagger-ui/index.html", package = "plumber") # serve the swagger page.
-  plumber::include_html(fname, res)
-}
 
 casualtiese = readRDS(main.file)
 casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
@@ -105,5 +96,5 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
 #' Tell plumber where our public facing directory is to SERVE.
 #' No need to map / to the build or public index.html. This will do.
 #'
-#' @assets ./build /
+#' @assets ../build /
 list()
