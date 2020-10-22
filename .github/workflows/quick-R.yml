@@ -1,0 +1,14 @@
+name: Check valid plumber.R file
+
+on:
+  push:
+    branches: master
+
+jobs:
+  Rscript:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: r-lib/actions/setup-r@master
+      - name: Rscript plumber.R
+        run: Rscript -e "install.packages('plumber'); plumber::plumb(file.path("R", "plumber.R"))"
