@@ -49,7 +49,8 @@ const osmtiles = {
       "tiles": [
         // "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
         // "http://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
+        // "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
+        'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg'
       ],
       "tileSize": 256
     }

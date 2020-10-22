@@ -6,7 +6,7 @@ function define(name, value) {
 }
 
 // TODO: change to domain name 
-define("PRD_URL", 'http://localhost:8000');
+define("PRD_URL", 'https://map.saferactive.org');
 define("DEV_URL", 'http://localhost:8000');
 define("UI_LIST", [
   "checkbox",
