@@ -45,50 +45,68 @@ cors <- function(res) {
 
 
 casualtiese = readRDS(main.file)
-casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
+# casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
+limit = 10000
 
-#' Serve casualties data
-#' @get /api/stats19
-cas_geojson <- function(res){
-  res$headers$`Content-type` <- "application/json"
-  res$body <- casualtiese_geojson
-  res
-}
+#' #' Serve casualties data
+#' #' @get /api/stats19
+#' cas_geojson <- function(res){
+#'   res$headers$`Content-type` <- "application/json"
+#'   res$body <- casualtiese_geojson
+#'   res
+#' }
 
 
 walking.rnet = readRDS(rnet.file)
 walking.rnet = geojsonsf::sf_geojson(walking.rnet)
 
-#' Serve rnet data
-#'  @get /api/walking
-rnet_geojson <- function(res){
-  res$headers$`Content-type` <- "application/json"
-  res$body <- walking.rnet
-  res
-}
+#' #' Serve rnet data
+#' #'  @get /api/walking
+#' rnet_geojson <- function(res){
+#'   res$headers$`Content-type` <- "application/json"
+#'   res$body <- walking.rnet
+#'   res
+#' }
 
 
-#' get a subset of results depending on a bbox provided
+#' Get a subset of results depending on a bbox provided
+#'
+#' By default the function/endpoint checks for default values of bbx
+#' bing c(0,0,0,0) if so a subset of the current data is sent for default
+#' loading. Then onwards, checks the values sent from client, if 0 or above 10k
+#' alert user appropriately in a message, if above 1 and below 10k return
+#' The results.
+#'
 #' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<xmax:double>/
 #' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<ymax:double>
 #'
 subs_geojson <- function(res, xmin, ymin, xmax, ymax){
-  res$headers$`Content-type` <- "application/json"
+  mm <- c(xmin, ymin, xmax, ymax)
+  subset_geojson <- NULL
+  print(mm)
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
-     !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
-    cat(c(xmin, ymin, xmax, ymax))
-
-    bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
-    cat(bbx)
-    cat(length(accidents))
-    subset <-  sf::st_crop(accidents, bbx) # bbox only
-    subset_geojson <-  geojsonsf::sf_geojson(subset)
-    print(subset)
-    print(subset_geojson)
-    res$body <- subset_geojson
+     !is.na(as.numeric(mm))) {
+    if(all(mm == 0)) {
+      bbx <- sf::st_bbox(casualtiese) - 0.263 # yields about 9.5k rows
+      subset <-  sf::st_crop(casualtiese, bbx)
+      subset_geojson <-  geojsonsf::sf_geojson(subset)
+    } else {
+      bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
+      subset <-  sf::st_crop(casualtiese, bbx - 0.2)
+      print(nrow(subset))
+      if(nrow(subset) == 0) {
+        return(list(Message = "No records found."))
+      }
+      if(nrow(subset) > limit) {
+        return(list(Message = "Message: please zoom to load less data."))
+      }
+      subset_geojson <-  geojsonsf::sf_geojson(subset)
+    }
   } else {
-    res$body <- accidents_geojson
+    return(m)
   }
+  res$headers$`Content-type` <- "application/json"
+  res$body <- subset_geojson
   res
 }
 

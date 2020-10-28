@@ -404,6 +404,7 @@ export default class DeckSidebar extends React.Component {
                   >Hex Plot</Checkbox>
                   <Checkbox
                     onChange={() => {
+                      // needed for subsequent parent call
                       this.setState({ subsetBoundsChange: !subsetBoundsChange })
                       if (toggleSubsetBoundsChange && typeof (toggleSubsetBoundsChange) === 'function') {
                         toggleSubsetBoundsChange(!subsetBoundsChange) //starts with false

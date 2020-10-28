@@ -114,7 +114,7 @@ export default class Welcome extends React.Component {
       mapStyle: MAPBOX_ACCESS_TOKEN ? ("mapbox://styles/mapbox/" +
         (props.dark ? "dark" : "streets") + "-v9") : osmtiles,
       initialViewState: init,
-      subsetBoundsChange: false,
+      subsetBoundsChange: true,
       lastViewPortChange: new Date(),
       colourName: 'default',
       iconLimit: 500,
@@ -184,7 +184,7 @@ export default class Welcome extends React.Component {
       // TODO: decide which is better.
       // URL + "/api/url?q=" + aURL : // get the server to parse it 
       aURL : // do not get the server to parse it 
-      URL + defualtURL;
+      URL + defualtURL + "/0/0/0/0";
 
     fetchData(fullURL, (data, error) => {
       if (!error) {
@@ -409,7 +409,7 @@ export default class Welcome extends React.Component {
 
   _updateURL(viewport) {
     const { latitude, longitude, zoom, bearing, pitch, altitude } = viewport;
-    const { subsetBoundsChange, lastViewPortChange } = this.state;
+    const { subsetBoundsChange, lastViewPortChange, loading } = this.state;
 
     //if we do history.replace/push 100 times in less than 30 secs 
     // browser will crash
@@ -425,25 +425,34 @@ export default class Welcome extends React.Component {
       this.setState({ lastViewPortChange: new Date() })
     }
     const bounds = this.map && this.map.getBounds()
-    if (bounds && subsetBoundsChange) {
+    console.log(bounds, subsetBoundsChange);
+    if (!loading && bounds && subsetBoundsChange) {
+      this.setState({loading: true})
       const box = getBbx(bounds)
-      // console.log("bounds", box);
-      const { xmin, ymin, xmax, ymax } = box;
-      fetchData(URL + defualtURL + xmin + "/" +
+      console.log("bounds", box);
+      // we need some margins int he user's view
+      const { xmin, ymin, xmax, ymax } = box; // we can do shrinking at R easier
+      fetchData(URL + defualtURL + "/" + xmin + "/" +
         ymin + "/" + xmax + "/" + ymax,
         (data, error) => {
+          console.log(data, error);
           if (!error) {
             // console.log(data.features);
             this.setState({
-              data: data.features,
+              data,
+              loading: false
             })
             this._generateLayer()
           } else {
-            //network error?
+            this.setState({
+              // alert?
+              loading: false
+            })
+            // update alert?
+            console.log(error)
           }
         })
     }
-
   }
 
   render() {
@@ -502,7 +511,7 @@ export default class Welcome extends React.Component {
             onHover={(info, evt) => {
               // const mapboxFeatures = this.map.queryRenderedFeatures([evt.offsetX, evt.offsetY]);
               // console.log(info, evt);
-              console.log(this.map.getLayer("vt"))
+              // console.log(this.map.getLayer("vt"))
               // let sp = this.map.queryRenderedFeatures()[0].properties.spenser;
               // sp = Object.values(JSON.parse(sp))[0]
               // const r = [];
