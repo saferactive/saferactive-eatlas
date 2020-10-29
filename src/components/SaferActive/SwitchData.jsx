@@ -7,7 +7,8 @@ const host = (process.env.NODE_ENV === 'development' ? DEV_URL : PRD_URL);
 
 const urls = {
   Casualties:  host + '/api/stats19',
-  Walking: host + '/api/walking'
+  Walking: host + '/api/walking',
+  Cycling: host + '/api/cycling'
 }
 export default (props) => {
   const { onSelectCallback } = props;
