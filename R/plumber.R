@@ -1,4 +1,4 @@
-packages <- c("sf", "geojsonsf", "curl")
+packages <- c("sf", "geojsonsf", "curl", "data.table")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
 }
@@ -45,6 +45,11 @@ cors <- function(res) {
 
 
 casualtiese = readRDS(main.file)
+dt <- as.data.table(casualtiese)
+# leaves geometry as "sfc_POINT" "sfc"
+coordinates <- st_coordinates(dt$geometry)
+dt$lon <- coordinates[,1]
+dt$lat <- coordinates[,2]
 # casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
 limit = 10000
 
@@ -87,12 +92,15 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
      !is.na(as.numeric(mm))) {
     if(all(mm == 0)) {
-      bbx <- sf::st_bbox(casualtiese) - 0.263 # yields about 9.5k rows
-      subset <-  sf::st_crop(casualtiese, bbx)
+      bbx <- sf::st_bbox(casualtiese) - 0.2 # send the data to start with
+      # subset <-  sf::st_crop(casualtiese, bbx)
+      subset <- subset_dt_sf(bbx[[1]], bbx[[2]], bbx[[3]], bbx[[4]])
+      print(nrow(subset))
       subset_geojson <-  geojsonsf::sf_geojson(subset)
     } else {
-      bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
-      subset <-  sf::st_crop(casualtiese, bbx - 0.2)
+      # bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
+      # subset <-  sf::st_crop(casualtiese, bbx)
+      subset <- subset_dt_sf(xmin, ymin, xmax, ymax)
       print(nrow(subset))
       if(nrow(subset) == 0) {
         return(list(Message = "No records found."))
@@ -110,6 +118,18 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
   res
 }
 
+subset_dt_sf <- function(xmin, ymin, xmax, ymax){
+  # TODO: make sure DT exists?
+  subdt <- data.table()
+  if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
+     !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
+    subdt <- dt[lon >= xmin & lon < xmax & lat >= ymin & lat < ymax, -c("lon", "lat")]
+  } else {
+    stop("bounding box is required.")
+  }
+  # quick solution via sf again!
+  subdt <- st_as_sf(subdt)
+}
 
 #' Tell plumber where our public facing directory is to SERVE.
 #' No need to map / to the build or public index.html. This will do.
