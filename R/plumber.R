@@ -131,6 +131,29 @@ subset_dt_sf <- function(xmin, ymin, xmax, ymax){
   subdt <- st_as_sf(subdt)
 }
 
+# download the tiles from github and put them in build
+# if there is no build create dir
+# the rest is dealt with by plumber as it serves contents of
+# build as ROOT so tiles will be available from /rnet-bike-tiles
+if(!dir.exists("../build")) {
+  dir.create("../build")
+}
+if(!dir.exists("../build/raster")) {
+  download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet-bike-tiles.zip",
+  dest = "../build/rnet-bike-tiles.zip")
+  unzip("../build/rnet-bike-tiles.zip", exdir = "../build")
+  file.remove("../build/rnet-bike-tiles.zip")
+  system("mv ../build/rnet-bike-tiles ../build/raster")
+}
+
+if(!dir.exists("../build/vector")) {
+  download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet_bicycle_kkm_yr_vec_tiles.zip",
+  dest = "../build/rnet_bicycle_kkm_yr_vec_tiles.zip")
+  unzip("../build/rnet_bicycle_kkm_yr_vec_tiles.zip", exdir = "../build")
+  file.remove("../build/rnet_bicycle_kkm_yr_vec_tiles.zip")
+  system("mv ../build/rnet_bicycle_kkm_yr_vec_tiles ../build/vector")
+}
+
 #' Tell plumber where our public facing directory is to SERVE.
 #' No need to map / to the build or public index.html. This will do.
 #'

@@ -115,7 +115,6 @@ export default class Welcome extends React.Component {
         (props.dark ? "dark" : "streets") + "-v9") : osmtiles,
       initialViewState: init,
       subsetBoundsChange: true,
-      lastViewPortChange: new Date(),
       colourName: 'default',
       iconLimit: 500,
       legend: false
@@ -129,10 +128,11 @@ export default class Welcome extends React.Component {
   componentDidMount() {
     this._fetchAndUpdateState()
     this.map && this.map.on("load", (e) => {
+      console.log("fiq");
       e.target.addSource('vt', {
         'type': 'vector',
         'tiles': [
-          'http://localhost:8000/tiles/{z}/{x}/{y}.pbf'
+          'http://localhost:8000/vector/{z}/{x}/{y}.pbf'
         ],
         'minzoom': 0,
         'maxzoom': 11
@@ -140,29 +140,38 @@ export default class Welcome extends React.Component {
       e.target.addLayer(
         {
           'id': 'vt',
-          'type': 'line',
+          'type': 'heatmap',
           'source': 'vt',
-          'source-layer': 'london_cyipt',
-          'layout': {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
+          'source-layer': 'rnet_cents',
+          // 'layout': {
+          //   'line-cap': 'round',
+          //   'line-join': 'round'
+          // },
           'paint': {
+            'heatmap-radius': 20,
+            'heatmap-intensity':0.01,
+            'heatmap-weight': 
+            [
+              'interpolate',
+              ['linear'],
+              ['get', 'kkm_cycled_yr'],
+              0,1
+              ]
             // 'line-opacity': 0.6,
-            'line-color': [
-              'match',
-              ['get', 'bikeCasSlight'],
-              0,
-              '#fbb03b',
-            /* other */ '#ccc'
-            ],
-            'line-width': [
-              'match',
-              ['get', 'bikeCasSlight'],
-              0,
-              2,
-            /* other */ 1
-            ]
+            // 'line-color': [
+            //   'match',
+            //   ['get', 'bikeCasSlight'],
+            //   0,
+            //   '#fbb03b',
+            // /* other */ '#ccc'
+            // ],
+            // 'line-width': [
+            //   'match',
+            //   ['get', 'bikeCasSlight'],
+            //   0,
+            //   2,
+            // /* other */ 1
+            // ]
           }
         },
         'waterway-label'
@@ -377,7 +386,7 @@ export default class Welcome extends React.Component {
       bboxLonLat.bbox : bbox(data)
     // console.log(center, bounds);
 
-    this.map.fitBounds(bounds)
+    this.map.fitBounds(bounds, {padding:'100px'})
     const viewport = {
       ...this.state.viewport,
       longitude: bboxLonLat ? bboxLonLat.lon : center[0],
@@ -409,26 +418,23 @@ export default class Welcome extends React.Component {
 
   _updateURL(viewport) {
     const { latitude, longitude, zoom, bearing, pitch, altitude } = viewport;
-    const { subsetBoundsChange, lastViewPortChange, loading } = this.state;
+    history.push(
+      `/?lat=${latitude.toFixed(3)}` +
+      `&lng=${longitude.toFixed(3)}` +
+      `&zoom=${zoom.toFixed(2)}` +
+      `&bea=${bearing}` +
+      `&pit=${pitch}` +
+      `&alt=${altitude}`
+    )
+  }
 
-    //if we do history.replace/push 100 times in less than 30 secs 
-    // browser will crash
-    if (new Date() - lastViewPortChange > 1000) {
-      history.push(
-        `/?lat=${latitude.toFixed(3)}` +
-        `&lng=${longitude.toFixed(3)}` +
-        `&zoom=${zoom.toFixed(2)}` +
-        `&bea=${bearing}` +
-        `&pit=${pitch}` +
-        `&alt=${altitude}`
-      )
-      this.setState({ lastViewPortChange: new Date() })
-    }
-    const bounds = this.map && this.map.getBounds()
+  _fetchDataWithBounds() {
+    const { subsetBoundsChange, loading } = this.state;
+    const bounds = this.map && this.map.getBounds();
     console.log(bounds, subsetBoundsChange);
     if (!loading && bounds && subsetBoundsChange) {
-      this.setState({loading: true})
-      const box = getBbx(bounds)
+      this.setState({ loading: true });
+      const box = getBbx(bounds);
       console.log("bounds", box);
       // we need some margins int he user's view
       const { xmin, ymin, xmax, ymax } = box; // we can do shrinking at R easier
@@ -441,17 +447,17 @@ export default class Welcome extends React.Component {
             this.setState({
               data,
               loading: false
-            })
-            this._generateLayer()
+            });
+            this._generateLayer();
           } else {
             this.setState({
               // alert?
               loading: false
-            })
+            });
             // update alert?
-            console.log(error)
+            console.log(error);
           }
-        })
+        });
     }
   }
 
@@ -479,6 +485,20 @@ export default class Welcome extends React.Component {
           onViewportChange={(viewport) => {
             this._updateURL(viewport)
             this.setState({ viewport })
+          }}
+          // see
+          // https://github.com/visgl/react-map-gl/issues/190#issuecomment-616381024
+          onInteractionStateChange={(s) => {
+            if (
+              s.isDragging ||
+              s.inTransition ||
+              s.isRotating ||
+              s.isZooming ||
+              s.isHovering ||
+              s.isPanning
+            )
+              return;
+            this._fetchDataWithBounds();
           }}
           height={window.innerHeight - 54 + 'px'}
           width={window.innerWidth + 'px'}
