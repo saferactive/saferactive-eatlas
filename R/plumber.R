@@ -146,12 +146,11 @@ if(!dir.exists("../build/raster")) {
   system("mv ../build/rnet-bike-tiles ../build/raster")
 }
 
-if(!dir.exists("../build/vector")) {
-  download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet_bicycle_kkm_yr_vec_tiles.zip",
-  dest = "../build/rnet_bicycle_kkm_yr_vec_tiles.zip")
-  unzip("../build/rnet_bicycle_kkm_yr_vec_tiles.zip", exdir = "../build")
-  file.remove("../build/rnet_bicycle_kkm_yr_vec_tiles.zip")
-  system("mv ../build/rnet_bicycle_kkm_yr_vec_tiles ../build/vector")
+if(!dir.exists("../build/rnet_cycling")) {
+  download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet_cycling.zip",
+  dest = "../build/rnet_cycling.zip")
+  unzip("../build/rnet_cycling.zip", exdir = "../build")
+  file.remove("../build/rnet_cycling.zip")
 }
 
 #' Tell plumber where our public facing directory is to SERVE.

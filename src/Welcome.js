@@ -128,11 +128,14 @@ export default class Welcome extends React.Component {
   componentDidMount() {
     this._fetchAndUpdateState()
     this.map && this.map.on("load", (e) => {
-      console.log("fiq");
+      const brewer = [
+        '#ffffcc','#ffeda0','#fed976',
+        '#feb24c','#fd8d3c','#fc4e2a',
+        '#e31a1c','#bd0026','#800026']
       e.target.addSource('vt', {
         'type': 'vector',
         'tiles': [
-          'http://localhost:8000/vector/{z}/{x}/{y}.pbf'
+          'http://localhost:8000/rnet_cycling/{z}/{x}/{y}.pbf'
         ],
         'minzoom': 0,
         'maxzoom': 11
@@ -140,38 +143,34 @@ export default class Welcome extends React.Component {
       e.target.addLayer(
         {
           'id': 'vt',
-          'type': 'heatmap',
+          'type': 'line',
           'source': 'vt',
-          'source-layer': 'rnet_cents',
-          // 'layout': {
-          //   'line-cap': 'round',
-          //   'line-join': 'round'
-          // },
+          'source-layer': 'rnet_cycling',
+          'layout': {
+            'line-cap': 'round',
+            'line-join': 'round'
+          },
           'paint': {
-            'heatmap-radius': 20,
-            'heatmap-intensity':0.01,
-            'heatmap-weight': 
-            [
-              'interpolate',
-              ['linear'],
-              ['get', 'kkm_cycled_yr'],
-              0,1
-              ]
-            // 'line-opacity': 0.6,
-            // 'line-color': [
-            //   'match',
-            //   ['get', 'bikeCasSlight'],
-            //   0,
-            //   '#fbb03b',
-            // /* other */ '#ccc'
-            // ],
-            // 'line-width': [
-            //   'match',
-            //   ['get', 'bikeCasSlight'],
-            //   0,
-            //   2,
-            // /* other */ 1
-            // ]
+            'line-opacity': 0.6,
+            'line-color': [
+              'case',
+              ['<', ['get', 'bicycle'], 10],
+              brewer[0],
+              ['<', ['get', 'bicycle'], 50],
+              brewer[1],
+              ['<', ['get', 'bicycle'], 100],
+              brewer[2],
+              ['<', ['get', 'bicycle'], 500],
+              brewer[3],
+              ['<', ['get', 'bicycle'], 700],
+              brewer[4],
+              ['<', ['get', 'bicycle'], 1000],
+              brewer[5],
+              ['<', ['get', 'bicycle'], 10000],
+              brewer[8],
+             /* other */ '#ccc'
+            ],
+            'line-width': 2
           }
         },
         'waterway-label'
