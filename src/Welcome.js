@@ -140,6 +140,14 @@ export default class Welcome extends React.Component {
         'minzoom': 0,
         'maxzoom': 11
       });
+      const layers = e.target.getStyle().layers;
+      var lastSymbolId;
+      for (var i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'symbol') {
+          lastSymbolId = layers[i].id;
+          // break; first!
+        }
+      }
       e.target.addLayer(
         {
           'id': 'vt',
@@ -170,10 +178,10 @@ export default class Welcome extends React.Component {
               brewer[8],
              /* other */ '#ccc'
             ],
-            'line-width': 2
+            'line-width': 3
           }
         },
-        'waterway-label'
+        MAPBOX_ACCESS_TOKEN ? 'waterway-label' : lastSymbolId
       )
     })
   }
