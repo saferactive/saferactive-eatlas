@@ -135,7 +135,7 @@ export default class Welcome extends React.Component {
       e.target.addSource('vt', {
         'type': 'vector',
         'tiles': [
-          'http://localhost:8000/rnet_cycling/{z}/{x}/{y}.pbf'
+          URL + '/rnet_cycling/{z}/{x}/{y}.pbf'
         ],
         'minzoom': 0,
         'maxzoom': 11
