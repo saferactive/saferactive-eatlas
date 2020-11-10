@@ -49,7 +49,8 @@ export default class DeckSidebar extends React.Component {
       reset: false,
       multiVarSelect: {},
       barChartVariable: "road_type",
-      datasetName: props.datasetName
+      datasetName: props.datasetName,
+      subsetBoundsChange: true
     }
   }
 
@@ -82,9 +83,9 @@ export default class DeckSidebar extends React.Component {
       radius, all_road_types, year, datasetName,
       subsetBoundsChange, multiVarSelect, barChartVariable } = this.state;
     const { onChangeRadius, onChangeElevation,
-      onSelectCallback, data, colourCallback, layerStyle,
+      onSelectCallback, data, colourCallback,
       toggleSubsetBoundsChange, urlCallback, alert,
-      onlocationChange, column, dark, toggleOpen, toggleHexPlot } = this.props;
+      onlocationChange, column, dark, toggleOpen } = this.props;
     let plot_data = [];
     let plot_data_multi = [[], []];
     const notEmpty = data && data.length > 1;
@@ -400,9 +401,7 @@ export default class DeckSidebar extends React.Component {
                     }
                   />
                   <Checkbox
-                    onChange={() => toggleHexPlot && toggleHexPlot()}
-                  >Hex Plot</Checkbox>
-                  <Checkbox
+                    checked={subsetBoundsChange}
                     onChange={() => {
                       // needed for subsequent parent call
                       this.setState({ subsetBoundsChange: !subsetBoundsChange })

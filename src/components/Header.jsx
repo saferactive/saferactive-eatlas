@@ -39,6 +39,7 @@ function Header(props) {
               )
             })
           }
+          <NavItem>v0.1</NavItem>
         </Nav>
         {/* trick RB with navbar-nav > li a but do it like following*/}
         {/* <div className="nav navbar-nav">
@@ -49,7 +50,7 @@ function Header(props) {
             </li>
           </div> */}
         <Nav pullRight>
-          <NavItem href="https://github.com/layik/eAtlas">
+          <NavItem href="https://github.com/saferactive">
             <i style={{ fontSize: '1.5em' }} className="fa fa-github"></i>
           </NavItem>
         </Nav>
