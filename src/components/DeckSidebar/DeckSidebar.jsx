@@ -147,7 +147,7 @@ export default class DeckSidebar extends React.Component {
             className="side-pane-header">
             <h2>{data && data.length ?
               data.length + " row" + (data.length > 1 ? "s" : "") + "."
-              : "Nothing to show"}
+              : this.props.loading? "Loading..." : "Nothing to show"}
             </h2>
             dataset: {this.state.datasetName}
           </div>

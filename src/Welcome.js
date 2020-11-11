@@ -124,7 +124,7 @@ export default class Welcome extends React.Component {
       // TODO: decide which is better.
       // URL + "/api/url?q=" + aURL : // get the server to parse it 
       aURL : // do not get the server to parse it 
-      URL + defualtURL + "/0/0/0/0";
+      URL + defualtURL + "/0/0/0/0"; // 0/0/0/0 is the default bounding
 
     fetchData(fullURL, (data, error) => {
       if (!error) {
@@ -489,6 +489,7 @@ export default class Welcome extends React.Component {
           </Source> */}
         </MapGL>
         <DeckSidebarContainer
+          loading={loading}
           dark={this.props.dark}
           layerStyle={layerStyle}
           isMobile={isMobile()}
@@ -538,7 +539,6 @@ export default class Welcome extends React.Component {
             this._fitViewport(bboxLonLat)
           }}
           showLegend={(legend) => this.setState({ legend })}
-          datasetName={defualtURL}
         />
         {
           legend && (geomType === 'polygon' ||

@@ -131,6 +131,23 @@ subset_dt_sf <- function(xmin, ymin, xmax, ymax){
   subdt <- st_as_sf(subdt)
 }
 
+#' Find a particular accident fast using R.Data.Table just like
+#' subset function above by returning an sf object ready to
+#' convert to geojson/json
+#'
+#' @get /api/accident/index/
+#' @get /api/accident/index
+find_accident <- function(index) {
+    m <- list(Error = "Error: please provide valid accident index.")
+  # sanity checks
+  if(is.na(index) || is.null(index) || 
+    nchar(index) > 15 || nchar(index) < 10) {
+    return(m)
+  }
+  # invisible(force(index))
+  st_as_sf(dt[accident_index == index])
+}
+
 # download the tiles from github and put them in build
 # if there is no build create dir
 # the rest is dealt with by plumber as it serves contents of
