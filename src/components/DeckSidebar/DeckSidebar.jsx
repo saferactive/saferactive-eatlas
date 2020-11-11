@@ -227,11 +227,11 @@ export default class DeckSidebar extends React.Component {
               }
               <hr style={{ clear: 'both' }} />
               <SwitchData onSelectCallback={(url) => {
-                if (datasetName === url ||
-                  datasetName.endsWith(url)) return;
-                resetState(url);
-                typeof (urlCallback) === 'function'
-                  && urlCallback(url);
+                // if (datasetName === url ||
+                //   datasetName.endsWith(url)) return;
+                // resetState(url);
+                // typeof (urlCallback) === 'function'
+                //   && urlCallback(url);
               }} />
               {columnDomain.length > 1 &&
               <Boxplot data={columnDomain}/>}

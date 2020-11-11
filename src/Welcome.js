@@ -27,8 +27,8 @@ import _ from 'underscore';
 import {
   fetchData, generateDeckLayer,
   getParamsFromSearch, getBbx,
-  isMobile, colorScale,
-  colorRanges,
+  isMobile, colorScale, 
+  colorRanges, addLayerToMap, OSMTILES,
   convertRange, getMin, getMax, isURL
 } from './utils';
 import Constants from './Constants';
@@ -41,26 +41,6 @@ import Tooltip from './components/Tooltip';
 import { sfType } from './geojsonutils';
 import { isNumber, isArray } from './JSUtils';
 
-const osmtiles = {
-  "version": 8,
-  "sources": {
-    "simple-tiles": {
-      "type": "raster",
-      "tiles": [
-        // "http://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        // "http://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        // "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
-        'https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg'
-      ],
-      "tileSize": 256
-    }
-  },
-  "layers": [{
-    "id": "simple-tiles",
-    "type": "raster",
-    "source": "simple-tiles",
-  }]
-};
 const URL = (process.env.NODE_ENV === 'development' ? Constants.DEV_URL : Constants.PRD_URL);
 const defualtURL = "/api/stats19";
 
@@ -112,7 +92,7 @@ export default class Welcome extends React.Component {
       radius: 100,
       elevation: 4,
       mapStyle: MAPBOX_ACCESS_TOKEN ? ("mapbox://styles/mapbox/" +
-        (props.dark ? "dark" : "streets") + "-v9") : osmtiles,
+        (props.dark ? "dark" : "streets") + "-v9") : OSMTILES,
       initialViewState: init,
       subsetBoundsChange: true,
       colourName: 'default',
@@ -127,63 +107,7 @@ export default class Welcome extends React.Component {
 
   componentDidMount() {
     this._fetchAndUpdateState()
-    this.map && this.map.on("load", (e) => {
-      const brewer = [
-        '#ffffcc','#ffeda0','#fed976',
-        '#feb24c','#fd8d3c','#fc4e2a',
-        '#e31a1c','#bd0026','#800026']
-      e.target.addSource('vt', {
-        'type': 'vector',
-        'tiles': [
-          URL + '/rnet_cycling/{z}/{x}/{y}.pbf'
-        ],
-        'minzoom': 0,
-        'maxzoom': 11
-      });
-      const layers = e.target.getStyle().layers;
-      var lastSymbolId;
-      for (var i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol') {
-          lastSymbolId = layers[i].id;
-          // break; first!
-        }
-      }
-      e.target.addLayer(
-        {
-          'id': 'vt',
-          'type': 'line',
-          'source': 'vt',
-          'source-layer': 'rnet_cycling',
-          'layout': {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
-          'paint': {
-            'line-opacity': 0.6,
-            'line-color': [
-              'case',
-              ['<', ['get', 'bicycle'], 10],
-              brewer[0],
-              ['<', ['get', 'bicycle'], 50],
-              brewer[1],
-              ['<', ['get', 'bicycle'], 100],
-              brewer[2],
-              ['<', ['get', 'bicycle'], 500],
-              brewer[3],
-              ['<', ['get', 'bicycle'], 700],
-              brewer[4],
-              ['<', ['get', 'bicycle'], 1000],
-              brewer[5],
-              ['<', ['get', 'bicycle'], 10000],
-              brewer[8],
-             /* other */ '#ccc'
-            ],
-            'line-width': 3
-          }
-        },
-        MAPBOX_ACCESS_TOKEN ? 'waterway-label' : lastSymbolId
-      )
-    })
+    addLayerToMap(this.map, MAPBOX_ACCESS_TOKEN);
   }
 
   /**
@@ -238,7 +162,7 @@ export default class Welcome extends React.Component {
 
     if (filter && filter.what === 'mapstyle') {
       this.setState({
-        mapStyle: !MAPBOX_ACCESS_TOKEN ? osmtiles :
+        mapStyle: !MAPBOX_ACCESS_TOKEN ? OSMTILES :
           filter && filter.what === 'mapstyle' ? "mapbox://styles/mapbox/" + filter.selected + "-v9" : this.state.mapStyle,
       })
       return;

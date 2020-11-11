@@ -15,14 +15,14 @@ export default (props) => {
   return (
     <StatefulButtonGroup
       mode={MODE.radio}
+      kind={KIND.secondary}
+      size={SIZE.compact}
       initialState={{ selected: 0 }}
     >
       {
         Object.keys(urls).map(each =>
           <Button
             key={each}
-            kind={KIND.secondary}
-            size={SIZE.compact}
             onClick={() =>
               onSelectCallback && onSelectCallback(urls[each])
             }>
