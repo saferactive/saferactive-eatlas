@@ -190,6 +190,11 @@ ptm <- proc.time()
 years = c(2019)
 dd = "."
 if(nchar(Sys.getenv("STAST19_DATA_DIR")) > 0) dd = Sys.getenv("STAST19_DATA_DIR")
+if(!dir.exists(dd)) {
+  # maybe it does not exist due to volume error or other
+  # create it it
+  dir.create(dd, recursive = TRUE)
+}
 # read
 print(date())
 acc = get_stats19(year = years, data_dir = dd, type = "acc")
