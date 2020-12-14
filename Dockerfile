@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-RUN apt-get update \ 
+RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		software-properties-common \
     ed \
@@ -15,8 +15,8 @@ RUN apt-get update \
     && add-apt-repository -y "ppa:marutter/rrutter" \
 	  && add-apt-repository -y "ppa:marutter/c2d4u3.5" \
     # sf intricate stuff see package docs on github.
-    && add-apt-repository ppa:ubuntugis/ubuntugis-unstable \ 
-    && apt-get update 
+    && add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
+    && apt-get update
 
 ## Configure default locale, see https://github.com/rocker-org/rocker/issues/19
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -38,7 +38,7 @@ RUN apt-get install -y --no-install-recommends \
 	&& ln -s /usr/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
 	&& ln -s /usr/lib/R/site-library/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
 	&& install.r docopt \
-	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds 
+	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -66,12 +66,13 @@ RUN apt-get update \
     tk-dev \
     unixodbc-dev \
     libv8-dev \
-    protobuf-compiler \ 
+    protobuf-compiler \
     git
 
-RUN apt-get install -y --no-install-recommends \ 
-    r-cran-devtools r-cran-sf r-cran-plumber r-cran-osmdata
+RUN apt-get install -y --no-install-recommends \
+    r-cran-devtools r-cran-sf r-cran-plumber r-cran-osmdata r-cran-data.table
 
+RUN R -e 'install.packages("stats19")'
 # RUN R -e 'install.packages(c("geojsonsf", dependencies=T))'
 # RUN R -e 'devtools::install_github("ATFutures/geoplumber")'
 
@@ -88,6 +89,9 @@ RUN npm install
 RUN npm install create-react-app
 RUN npm run build
 RUN rm -rf node_modules
+
+# volume path to use in plumber.R
+ENV STAST19_DATA_DIR /stats19-data
 
 EXPOSE 8000
 

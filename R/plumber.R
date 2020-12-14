@@ -1,4 +1,4 @@
-packages <- c("sf", "geojsonsf", "curl", "data.table")
+packages <- c("sf", "geojsonsf", "curl", "data.table", "stats19")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
 }
@@ -25,11 +25,11 @@ if(!file.exists(main.file)) {
 }
 
 if (!file.exists(rnet.file)) {
-   download.file(
-     file.path("www.github.com/saferactive/saferactive/releases/download/0.1",
-     rnet.file),
-     destfile = rnet.file
-   )
+  download.file(
+    file.path("www.github.com/saferactive/saferactive/releases/download/0.1",
+              rnet.file),
+    destfile = rnet.file
+  )
 }
 
 # Enable CORS -------------------------------------------------------------
@@ -131,21 +131,27 @@ subset_dt_sf <- function(xmin, ymin, xmax, ymax){
   subdt <- st_as_sf(subdt)
 }
 
-#' Find a particular accident fast using R.Data.Table just like
-#' subset function above by returning an sf object ready to
-#' convert to geojson/json
+#' Find a particular accident details
 #'
-#' @get /api/accident/index/
-#' @get /api/accident/index
-find_accident <- function(index) {
-    m <- list(Error = "Error: please provide valid accident index.")
+#' @serializer unboxedJSON
+#' @get /api/accident/<index>/
+#' @get /api/accident/<index>
+get_accident <- function(index) {
+  m <- list(Error = "Error: please provide valid accident index.")
   # sanity checks
-  if(is.na(index) || is.null(index) || 
-    nchar(index) > 15 || nchar(index) < 10) {
+  if(is.na(index) || is.null(index) ||
+     nchar(index) > 15 || nchar(index) < 10) {
     return(m)
   }
   # invisible(force(index))
-  st_as_sf(dt[accident_index == index])
+  a = acc[accident_index == index]
+  c = cas[accident_index == index]
+  v = veh[accident_index == index]
+  if(all(nrow(a) == 0 && nrow(c) == 0 && nrow(v) == 0)) {
+    print("No results")
+    return(list(error="No results"))
+  }
+  list(acc=a, cas=c, veh=v)
 }
 
 # download the tiles from github and put them in build
@@ -157,7 +163,7 @@ if(!dir.exists("../build")) {
 }
 if(!dir.exists("../build/raster")) {
   download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet-bike-tiles.zip",
-  dest = "../build/rnet-bike-tiles.zip")
+                dest = "../build/rnet-bike-tiles.zip")
   unzip("../build/rnet-bike-tiles.zip", exdir = "../build")
   file.remove("../build/rnet-bike-tiles.zip")
   system("mv ../build/rnet-bike-tiles ../build/raster")
@@ -165,7 +171,7 @@ if(!dir.exists("../build/raster")) {
 
 if(!dir.exists("../build/rnet_cycling")) {
   download.file("https://github.com/saferactive/saferactive/releases/download/0.1.1/rnet_cycling.zip",
-  dest = "../build/rnet_cycling.zip")
+                dest = "../build/rnet_cycling.zip")
   unzip("../build/rnet_cycling.zip", exdir = "../build")
   file.remove("../build/rnet_cycling.zip")
 }
@@ -175,3 +181,27 @@ if(!dir.exists("../build/rnet_cycling")) {
 #'
 #' @assets ../build /
 list()
+
+########### Loading full stats19 ######
+#######################################
+ptm <- proc.time()
+# TODO get Dockerfile volume right
+# years = c(1979,2005,2015:2019)
+years = c(2019)
+dd = "."
+if(nchar(Sys.getenv("STAST19_DATA_DIR")) > 0) dd = Sys.getenv("STAST19_DATA_DIR")
+# read
+print(date())
+acc = get_stats19(year = years, data_dir = dd, type = "acc")
+cas = get_stats19(year = years, data_dir = dd, type = "cas")
+veh = get_stats19(year = years, data_dir = dd, type = "veh")
+
+# just in case
+stopifnot(all(acc$accident_index %in% cas$accident_index))
+stopifnot(all(cas$accident_index %in% acc$accident_index))
+
+# data.table
+acc = as.data.table(acc)
+cas = as.data.table(cas)
+veh = as.data.table(veh)
+print(proc.time() - ptm)
