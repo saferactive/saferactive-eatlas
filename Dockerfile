@@ -73,6 +73,7 @@ RUN apt-get install -y --no-install-recommends \
     r-cran-sf r-cran-plumber r-cran-osmdata
 
 RUN R -e 'install.packages("stats19")'
+RUN R -e 'install.packages("devtools")'
 RUN R -e 'install.packages("data.table")'
 
 # RUN R -e 'install.packages(c("geojsonsf", dependencies=T))'
