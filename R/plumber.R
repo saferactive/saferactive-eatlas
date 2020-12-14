@@ -196,7 +196,6 @@ if(!dir.exists(dd)) {
   dir.create(dd, recursive = TRUE)
 }
 # read
-print(date())
 acc = get_stats19(year = years, data_dir = dd, type = "acc")
 cas = get_stats19(year = years, data_dir = dd, type = "cas")
 veh = get_stats19(year = years, data_dir = dd, type = "veh")
