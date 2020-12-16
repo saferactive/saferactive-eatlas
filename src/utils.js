@@ -172,7 +172,7 @@ const generateDeckLayer = (name, data, renderTooltip, options) => {
       id: 'icon-layer',
       data,
       pickable: true,
-      iconAtlas: 'location-icon-atlas.png',
+      iconAtlas: 'icons.png',
       iconMapping: mapping,
       sizeScale: 60,
       getPosition: d => d.geometry.coordinates,

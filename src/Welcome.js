@@ -42,7 +42,7 @@ import { sfType } from './geojsonutils';
 import { isNumber, isArray } from './JSUtils';
 
 const URL = (process.env.NODE_ENV === 'development' ? Constants.DEV_URL : Constants.PRD_URL);
-const defualtURL = "/api/stats19";
+const defualtURL = "/api/stats19hh";
 
 // Set your mapbox access token here
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;

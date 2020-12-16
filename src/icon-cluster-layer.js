@@ -72,7 +72,22 @@ export default class IconClusterLayer extends CompositeLayer {
         iconMapping,
         sizeScale,
         getPosition: d => d.geometry.coordinates,
-        getIcon: d => getIconName(d.properties.cluster ? d.properties.point_count : 1),
+        // getIcon: d => getIconName(d.properties.cluster ? d.properties.point_count : 1),
+        getIcon: d => {
+          // console.log(d);
+          if(d.properties.cluster) return getIconName(d.properties.point_count)
+          // now the actual object is returned
+          /*
+          * {geometry:{coordinates:[lon,lat]}, properties:{gejsonObj}}
+          */
+          const s = d.properties.properties &&
+          d.properties.properties.accident_severity
+          if(s === 'Serious') return 'marker-se';
+          if(s === 'Slight') return 'marker-sl';
+          if(s === 'Fatal') return 'marker-fa';
+
+          return getIconName(1)
+        },
         getSize: d => getIconSize(d.properties.cluster ? d.properties.point_count : 1)
       })
     );

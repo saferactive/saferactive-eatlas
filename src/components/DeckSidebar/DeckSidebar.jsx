@@ -378,9 +378,11 @@ export default class DeckSidebar extends React.Component {
                           // array of seingle {id: , value: } object
                           const newBarChartVar = (selected && selected[0]) ?
                             selected[0].value : barChartVariable;
+                          console.log("xwa");
                           this.setState({
                             barChartVariable: newBarChartVar
                           });
+                          console.log(newBarChartVar);
                           typeof onSelectCallback === 'function' &&
                             onSelectCallback({
                               what: 'layerStyle', selected: newBarChartVar

@@ -138,5 +138,26 @@
     "width": 128,
     "height": 128,
     "anchorY": 128
+  },
+  "marker-fa": {
+    "x": 0,
+    "y": 640,
+    "width": 128,
+    "height": 128,
+    "anchorY": 128
+  },
+  "marker-sl": {
+    "x": 128,
+    "y": 640,
+    "width": 128,
+    "height": 128,
+    "anchorY": 128
+  },
+  "marker-se": {
+    "x": 256,
+    "y": 640,
+    "width": 128,
+    "height": 128,
+    "anchorY": 128
   }
 }
