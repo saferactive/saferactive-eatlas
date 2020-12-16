@@ -81,10 +81,10 @@ export default class IconClusterLayer extends CompositeLayer {
           * {geometry:{coordinates:[lon,lat]}, properties:{gejsonObj}}
           */
           const s = d.properties.properties &&
-          d.properties.properties.accident_severity
-          if(s === 'Serious') return 'marker-se';
-          if(s === 'Slight') return 'marker-sl';
-          if(s === 'Fatal') return 'marker-fa';
+          d.properties.properties.casualty_type
+          if(s === 'Pedestrian') return 'marker-pe';
+          if(s === 'Cyclist') return 'marker-cy';
+          if(s === 'Driver') return 'marker-dr';
 
           return getIconName(1)
         },

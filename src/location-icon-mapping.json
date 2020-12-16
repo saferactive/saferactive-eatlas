@@ -139,21 +139,21 @@
     "height": 128,
     "anchorY": 128
   },
-  "marker-fa": {
+  "marker-pe": {
     "x": 0,
     "y": 640,
     "width": 128,
     "height": 128,
     "anchorY": 128
   },
-  "marker-sl": {
+  "marker-cy": {
     "x": 128,
     "y": 640,
     "width": 128,
     "height": 128,
     "anchorY": 128
   },
-  "marker-se": {
+  "marker-dr": {
     "x": 256,
     "y": 640,
     "width": 128,
