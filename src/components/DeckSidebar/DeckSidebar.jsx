@@ -368,7 +368,7 @@ export default class DeckSidebar extends React.Component {
                     <>
                       <h6>Deck Layer:</h6>
                       <MultiSelect
-                        title="Choose Layer"
+                        title="Vis style"
                         single={true}
                         values={
                           LAYERSTYLES.map(e =>
@@ -376,16 +376,14 @@ export default class DeckSidebar extends React.Component {
                         }
                         onSelectCallback={(selected) => {
                           // array of seingle {id: , value: } object
-                          const newBarChartVar = (selected && selected[0]) ?
-                            selected[0].value : barChartVariable;
-                          console.log("xwa");
+                          const layerStyle = (selected && selected[0]) ?
+                            selected[0].value : layerStyle;
                           this.setState({
-                            barChartVariable: newBarChartVar
+                            layerStyle: layerStyle
                           });
-                          console.log(newBarChartVar);
                           typeof onSelectCallback === 'function' &&
                             onSelectCallback({
-                              what: 'layerStyle', selected: newBarChartVar
+                              what: 'layerStyle', selected: layerStyle
                             });
                         }}
                       />

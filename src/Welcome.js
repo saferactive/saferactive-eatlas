@@ -168,11 +168,10 @@ export default class Welcome extends React.Component {
       return;
     }
     let data = this.state.data && this.state.data.features
+    if (!data) return;
     const { colourName, iconLimit } = this.state;
     let column = (filter && filter.what === 'column' && filter.selected) ||
       this.state.column;
-
-    if (!data) return;
     if (filter && filter.what === "%") {
       data = data.slice(0, filter.selected / 100 * data.length)
     }
@@ -362,21 +361,22 @@ export default class Welcome extends React.Component {
   _fetchDataWithBounds() {
     const { subsetBoundsChange, loading } = this.state;
     const bounds = this.map && this.map.getBounds();
-    console.log(bounds, subsetBoundsChange);
+    // console.log(bounds, subsetBoundsChange);
     if (!loading && bounds && subsetBoundsChange) {
       this.setState({ loading: true });
       const box = getBbx(bounds);
-      console.log("bounds", box);
+      // console.log("bounds", box);
       // we need some margins int he user's view
       const { xmin, ymin, xmax, ymax } = box; // we can do shrinking at R easier
+      //TODO: refactor the rest to use _fetchAndUpdateState
+      // just needs switch to ignore refitting window
+      // also needs handling "zoom in" message
       fetchData(URL + defualtURL + "/" + xmin + "/" +
         ymin + "/" + xmax + "/" + ymax,
         (data, error) => {
-          console.log(data, error);
-          if (!error) {
-            // console.log(data.features);
+          if (!error && data.features) {
             this.setState({
-              data,
+              data: data,
               loading: false
             });
             this._generateLayer();
@@ -528,12 +528,12 @@ export default class Welcome extends React.Component {
           onSelectCallback={(selected) => this._generateLayer({ filter: selected })}
           onChangeRadius={(value) => this._generateLayer({ radius: value })}
           onChangeElevation={(value) => this._generateLayer({ elevation: value })}
-          toggleSubsetBoundsChange={(value) => {
+          toggleSubsetBoundsChange={(checked) => {
             this.setState({
-              loading: true,
-              subsetBoundsChange: value
+              loading: checked,
+              subsetBoundsChange: checked
             })
-            this._fetchAndUpdateState();
+            checked && this._fetchAndUpdateState();
           }}
           onlocationChange={(bboxLonLat) => {
             this._fitViewport(bboxLonLat)
