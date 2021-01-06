@@ -1,5 +1,6 @@
 import {CompositeLayer} from '@deck.gl/core';
 import {IconLayer} from '@deck.gl/layers';
+import { options } from 'marked';
 import Supercluster from 'supercluster';
 
 function getIconName(size) {
@@ -80,12 +81,20 @@ export default class IconClusterLayer extends CompositeLayer {
           /*
           * {geometry:{coordinates:[lon,lat]}, properties:{gejsonObj}}
           */
-          const s = d.properties.properties &&
+          let ct = d.properties.properties &&
           d.properties.properties.casualty_type
-          if(s === 'Pedestrian') return 'marker-pe';
-          if(s === 'Cyclist') return 'marker-cy';
-          if(s === 'Driver') return 'marker-dr';
+          ct = ct && ct.substring(0,2).toLowerCase()
+          let cs = d.properties.properties &&
+          d.properties.properties.accident_severity
+          cs = cs && cs === "Slight" ? "" : cs.substring(0,1).toLowerCase()
 
+          const opts = [
+            'marker-dr-f', 'marker-pe-f', 'marker-cy-f', 'marker-fam-f',
+            'marker-dr', 'marker-pe', 'marker-cy', 'marker-fam',
+            'marker-dr-s', 'marker-pe-s', 'marker-cy-s', 'marker-fam-s',
+          ]
+          const iconName = "marker-" + ct + (cs ? ("-" + cs) : "");
+          if(opts.includes(iconName)) return opts[opts.indexOf(iconName)]
           return getIconName(1)
         },
         getSize: d => getIconSize(d.properties.cluster ? d.properties.point_count : 1)
