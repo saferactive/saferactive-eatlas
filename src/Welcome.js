@@ -394,7 +394,7 @@ export default class Welcome extends React.Component {
 
   render() {
     const { tooltip, viewport, initialViewState,
-      loading, mapStyle, alert,
+      loading, mapStyle, alert, data, filtered,
       layerStyle, geomType, legend, coords } = this.state;
     // console.log(geomType, legend);
 
@@ -495,7 +495,8 @@ export default class Welcome extends React.Component {
           isMobile={isMobile()}
           key="decksidebar"
           alert={alert}
-          data={this.state.filtered}
+          unfilteredData={data && data.features}
+          data={filtered}
           colourCallback={(colourName) =>
             this._generateLayer({ cn: colourName })
           }

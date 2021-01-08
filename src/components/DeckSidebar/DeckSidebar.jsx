@@ -83,7 +83,7 @@ export default class DeckSidebar extends React.Component {
       radius, all_road_types, year, datasetName,
       subsetBoundsChange, multiVarSelect, barChartVariable } = this.state;
     const { onChangeRadius, onChangeElevation,
-      onSelectCallback, data, colourCallback,
+      onSelectCallback, data, colourCallback, unfilteredData,
       toggleSubsetBoundsChange, urlCallback, alert,
       onlocationChange, column, dark, toggleOpen } = this.props;
     let plot_data = [];
@@ -423,7 +423,7 @@ export default class DeckSidebar extends React.Component {
                     className="fa fa-filter" />
                 }>
                   {
-                    data && data.length > 0 &&
+                    unfilteredData && unfilteredData.length > 0 &&
                     <Variables
                       dark={dark}
                       multiVarSelect={multiVarSelect}
@@ -434,7 +434,7 @@ export default class DeckSidebar extends React.Component {
                               { what: '' } : { what: 'multi', selected: mvs })
                         this.setState({ multiVarSelect: mvs })
                       }}
-                      data={data} />
+                      unfilteredData={unfilteredData} />
                   }
                 </Tab>
               </Tabs>
