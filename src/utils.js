@@ -388,7 +388,7 @@ const shortenName = (name, n = 26) => {
   return (shortened);
 }
 
-const percentDiv = (title, left, cb, dark) => {
+const percentDiv = (title, left, cb, dark, n = 3) => {
   return (
     <div
       key={title}
@@ -398,7 +398,7 @@ const percentDiv = (title, left, cb, dark) => {
         textAlign: 'center',
         position: 'relative',
         float: 'left',
-        width: '30%',
+        width: (isNumber(n) ? 90/n : 90/3) + '%',
         color: dark ? 'white' : 'black',
         margin: '10px 2px',
         border: '1px solid gray',

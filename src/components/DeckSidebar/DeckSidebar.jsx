@@ -30,8 +30,6 @@ import MultiSelect from '../MultiSelect';
 import AddVIS from '../AddVIS';
 import MultiLinePlot from '../Showcases/MultiLinePlot';
 import Boxplot from '../Boxplot/Boxplot';
-import SwitchData from '../SaferActive/SwitchData';
-// import GenerateUI from '../UI';
 
 const URL = (process.env.NODE_ENV === 'development' ? DEV_URL : PRD_URL);
 
@@ -89,8 +87,7 @@ export default class DeckSidebar extends React.Component {
     let plot_data = [];
     let plot_data_multi = [[], []];
     const notEmpty = data && data.length > 1;
-    plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);
-    const severity_data = propertyCount(data, "accident_severity");    
+    plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);  
     let columnDomain = [];
     let columnData = notEmpty ?
       xyObjectByProperty(data, column || barChartVariable) : [];
@@ -131,6 +128,27 @@ export default class DeckSidebar extends React.Component {
         datasetName: urlOrName || datasetName
       })
     }
+
+    // reuse for different props
+    const generatePercent = (array, prop, n) => {
+      return array && 
+      <div style={{clear: 'both'}}>{
+        array.map(each =>
+          percentDiv(each.x, 100 * each.y / data.length, () => {
+            if (multiVarSelect && multiVarSelect[prop] &&
+              multiVarSelect[prop].has(each.x)) {
+              delete multiVarSelect[prop];
+            } else {
+              multiVarSelect[prop] = new Set([each.x]);
+              this.setState({ multiVarSelect })
+            }
+            onSelectCallback &&
+              onSelectCallback(Object.keys(multiVarSelect).length === 0 ?
+                { what: '' } : { what: 'multi', selected: multiVarSelect })
+          }, dark, n))
+      }</div>
+    }
+
     return (
       <>
         <div
@@ -211,28 +229,13 @@ export default class DeckSidebar extends React.Component {
               <br />
               {/* TODO: generate this declaritively too */}
               {
-                severity_data && severity_data.map(each =>
-                  percentDiv(each.x, 100 * each.y / data.length, () => {
-                    if (multiVarSelect && multiVarSelect['accident_severity'] &&
-                      multiVarSelect['accident_severity'].has(each.x)) {
-                      delete multiVarSelect['accident_severity'];
-                    } else {
-                      multiVarSelect['accident_severity'] = new Set([each.x]);
-                      this.setState({ multiVarSelect })
-                    }
-                    onSelectCallback &&
-                      onSelectCallback(Object.keys(multiVarSelect).length === 0 ?
-                        { what: '' } : { what: 'multi', selected: multiVarSelect })
-                  }, dark))
+                ["accident_severity", "casualty_type"]
+                .map(e => generatePercent(
+                  propertyCount(data, e), e, e === "casualty_type" ? 2 : 3
+                  )
+                )
               }
               <hr style={{ clear: 'both' }} />
-              <SwitchData onSelectCallback={(url) => {
-                // if (datasetName === url ||
-                //   datasetName.endsWith(url)) return;
-                // resetState(url);
-                // typeof (urlCallback) === 'function'
-                //   && urlCallback(url);
-              }} />
               {columnDomain.length > 1 &&
               <Boxplot data={columnDomain}/>}
 
