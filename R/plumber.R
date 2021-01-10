@@ -97,11 +97,13 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
      !is.na(as.numeric(mm))) {
     if(all(mm == 0)) {
-      bbx <- sf::st_bbox(casualties) - 0.23 # send the data to start with
+      # bbx <- sf::st_bbox(casualties) - 0.23 # send the data to start with
       # subset <-  sf::st_crop(casualties, bbx)
-      subset <- subset_dt_sf(bbx[[1]], bbx[[2]], bbx[[3]], bbx[[4]])
-      print(nrow(subset))
-      subset_geojson <-  geojsonsf::sf_geojson(subset)
+      # subset <- subset_dt_sf(bbx[[1]], bbx[[2]], bbx[[3]], bbx[[4]])
+      # print(nrow(subset))
+      # subset_geojson <-  geojsonsf::sf_geojson(subset)
+      subset <- dt[sample(nrow(dt), limit),]
+      subset_geojson <- sf_geojson(st_as_sf(subset))
     } else {
       # bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
       # subset <-  sf::st_crop(casualties, bbx)

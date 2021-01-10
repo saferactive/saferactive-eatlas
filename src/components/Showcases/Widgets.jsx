@@ -66,7 +66,7 @@ const yearSlider = (options) => {
   }
   const years = getPropertyValues({ features: data }, "date")
     // returned 2009-01-02, convert to 2009
-    .map(e => e.split("-")[0])
+    .map(e => +(e.split("-")[0])).sort()
   return <GenerateUI
     title={
       // TODO: change min max labels dynamically
