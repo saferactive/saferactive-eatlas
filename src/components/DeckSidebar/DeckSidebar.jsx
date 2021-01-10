@@ -183,7 +183,7 @@ export default class DeckSidebar extends React.Component {
                   onSelectCallback={(changes) => console.log(changes)} 
                   callback={(changes) => console.log(changes)}/> */}
               {/* range of two values slider is not native html */
-                yearSlider({data, year, multiVarSelect,
+                yearSlider({data: unfilteredData, year, multiVarSelect,
                   // for callback we get { year: "",multiVarSelect }
                   onSelectCallback, callback: (changes) => this.setState(changes)})
               }

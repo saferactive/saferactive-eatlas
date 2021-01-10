@@ -190,7 +190,8 @@ export default class Welcome extends React.Component {
             // selected.var > Set()
             for (let each of Object.keys(selected)) {
               const nextValue = each === "date" ?
-                d.properties[each].split("/")[2] : d.properties[each] + ""
+                // for now format is yyyy-mm-dd
+                d.properties[each].split("-")[0] : d.properties[each] + ""
               // each from selected must be in d.properties
               // *****************************
               // compare string to string
