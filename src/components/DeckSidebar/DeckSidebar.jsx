@@ -322,7 +322,7 @@ export default class DeckSidebar extends React.Component {
                     plotStyle={{ marginBottom: 100 }} noYAxis={true}
 
                   />}
-                  {popPyramid({ data, dark: dark })}
+                  {/* {popPyramid({ data, dark: dark })} */}
                 </Tab>
                 <Tab eventKey="2" title={
                   <i style={{ fontSize: '2rem' }}
