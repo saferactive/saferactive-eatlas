@@ -23,13 +23,12 @@ import Modal from '../Modal';
 import DataTable from '../Table';
 
 import { yearSlider } from '../Showcases/Widgets';
-import { popPyramid, crashes_plot_data } from '../Showcases/Plots';
+import { crashes_plot_data } from '../Showcases/Plots';
 import SeriesPlot from '../Showcases/SeriesPlot';
 import { isEmptyOrSpaces, isNumber } from '../../JSUtils';
 import MultiSelect from '../MultiSelect';
 import AddVIS from '../AddVIS';
 import MultiLinePlot from '../Showcases/MultiLinePlot';
-import Boxplot from '../Boxplot/Boxplot';
 
 const URL = (process.env.NODE_ENV === 'development' ? DEV_URL : PRD_URL);
 
@@ -236,8 +235,8 @@ export default class DeckSidebar extends React.Component {
                 )
               }
               <hr style={{ clear: 'both' }} />
-              {columnDomain.length > 1 &&
-              <Boxplot data={columnDomain}/>}
+              {/* {columnDomain.length > 1 &&
+              <Boxplot data={columnDomain}/>} */}
 
               <Tabs defaultActiveKey={"1"} id="main-tabs">
                 <Tab eventKey="1" title={

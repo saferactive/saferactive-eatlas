@@ -44,20 +44,25 @@ cors <- function(res) {
 # TODO: option to remove above CORS
 
 
-casualtiese = readRDS(main.file)
-dt <- as.data.table(casualtiese)
+casualties = readRDS(main.file)
+casualties = casualties[,grep("accident_|lat|long|
+vehicles|casualties|date|day_|sex_of_casualty|age_of_casualty|
+age_band_of_casualt|sex|vehicle_type|casualty_type|road_type|
+time|local_|road_cl|limit|urban|junction_det|
+class|pedestrian_crossing$|force", names(casualties))]
+dt <- as.data.table(casualties)
 # leaves geometry as "sfc_POINT" "sfc"
 coordinates <- st_coordinates(dt$geometry)
 dt$lon <- coordinates[,1]
 dt$lat <- coordinates[,2]
-# casualtiese_geojson = geojsonsf::sf_geojson(casualtiese)
+# casualties_geojson = geojsonsf::sf_geojson(casualties)
 limit = 10000
 
 #' #' Serve casualties data
 #' #' @get /api/stats19
 #' cas_geojson <- function(res){
 #'   res$headers$`Content-type` <- "application/json"
-#'   res$body <- casualtiese_geojson
+#'   res$body <- casualties_geojson
 #'   res
 #' }
 
@@ -92,14 +97,14 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
      !is.na(as.numeric(mm))) {
     if(all(mm == 0)) {
-      bbx <- sf::st_bbox(casualtiese) - 0.2 # send the data to start with
-      # subset <-  sf::st_crop(casualtiese, bbx)
+      bbx <- sf::st_bbox(casualties) - 0.23 # send the data to start with
+      # subset <-  sf::st_crop(casualties, bbx)
       subset <- subset_dt_sf(bbx[[1]], bbx[[2]], bbx[[3]], bbx[[4]])
       print(nrow(subset))
       subset_geojson <-  geojsonsf::sf_geojson(subset)
     } else {
       # bbx <- c(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax)
-      # subset <-  sf::st_crop(casualtiese, bbx)
+      # subset <-  sf::st_crop(casualties, bbx)
       subset <- subset_dt_sf(xmin, ymin, xmax, ymax)
       print(nrow(subset))
       if(nrow(subset) == 0) {

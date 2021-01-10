@@ -43,6 +43,13 @@ export default class Variables extends Component {
     }
     // describe first feature
     const description = describeFeatureVariables(unfilteredData[0]);
+    const dataCols = Object.keys(unfilteredData[0].properties)
+      .filter(e => e !== "date") // hardcode
+      .map(e => ({
+        // Format: Column Name [String]
+        id: humanize(e) + " [" + description[e].name + "]",
+        value: e
+      }))
 
     return (
       <div style={this.props.style}>
@@ -58,7 +65,7 @@ export default class Variables extends Component {
         <Select
           labelKey="id"
           valueKey="value"
-          placeholder={"Chose column"}
+          placeholder={"Chose column " + "(" + dataCols.length + ")"}
           maxDropdownHeight="300px"
           type={TYPE.search}
           multi={true}
@@ -80,14 +87,7 @@ export default class Variables extends Component {
             })
           }}
           value={columns}
-          options={Object.keys(unfilteredData[0].properties)
-            .filter(e => e !== "date") // hardcode
-            .map(e => ({
-              // Format: Column Name [String]
-              id: humanize(e) + " [" + description[e].name + "]",
-              value: e
-            }))
-          }
+          options={dataCols}
         />
         {
           columns && columns.map(e => e.value)
@@ -109,7 +109,7 @@ export default class Variables extends Component {
                   filter={key}
                   multiVarSelect={multiVarSelect}
                   // all string from here
-                  values={columnValues.map(e => ({ id: e + "", value: e + ""}))}
+                  values={columnValues.map(e => ({ id: e + "", value: e + "" }))}
                   onSelectCallback={(filter) => {
                     typeof (onSelectCallback) === 'function' &&
                       onSelectCallback(filter.selected || {});
