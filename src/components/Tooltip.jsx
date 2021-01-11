@@ -118,7 +118,8 @@ export default class Tooltip extends React.Component {
                 plotStyle={{ height: 100, marginBottom: 50 }}
               /> :
               <SeriesPlot
-                title={"Total (" + severity_keys[0] + ")"}
+                title={severity_keys[0] ? "Total (" + severity_keys[0] + ")" :
+                  "Total"}
                 data={crashes_data} type={LineSeries} />
           }
         </div>
@@ -126,7 +127,7 @@ export default class Tooltip extends React.Component {
     return (tooltip)
   }
 
-  _listPropsAndValues(hoveredObject) {
+  _listPropsAndValues(hoveredObject, all = false) {
     let DATA = []
     const props = hoveredObject.properties;
     if (props) {
@@ -135,7 +136,10 @@ export default class Tooltip extends React.Component {
           return ([humanize(p), props[p]])
         })
     } else { // two points passed go through first one
-      DATA = Object.keys(hoveredObject.points[0].properties)
+      const keys = Object.keys(hoveredObject.points[0].properties);
+      const n = 6;
+      DATA = keys
+        .slice(1, all ? keys.length : n) // miss accident_index
         .map(p => {
           let points = [
             humanize(p),
