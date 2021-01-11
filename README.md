@@ -121,7 +121,13 @@ API key in `.env.local` file using variable name:
 
 ## Docker for production
 
-Repo contains Dockerfile for production. This is again WIP.
+Repo contains Dockerfile for production. This is again WIP. Before
+building, make sure you change the production URL in `Constants.js`. For
+example,
+[currently](https://github.com/saferactive/saferactive-eatlas/blob/262c695e91f90a62babb6743837f3df1de4fed80/src/Constants.js#L9)
+that is `https://map.saferactive.org`. If you like to use it locally
+just make it same as the development URL or `http://localhost:8000`. You
+can now build the image and run it.
 
 ``` sh
 # Dockerfile manages your npm/React build steps
