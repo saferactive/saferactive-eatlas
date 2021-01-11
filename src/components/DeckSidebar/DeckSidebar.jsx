@@ -17,7 +17,7 @@ import { LineSeries, VerticalBarSeries } from 'react-vis';
 import Variables from '../Variables';
 import RBAlert from '../RBAlert';
 import { propertyCount } from '../../geojsonutils';
-import {DEV_URL, PRD_URL, LAYERSTYLES} from '../../Constants';
+import { DEV_URL, PRD_URL, LAYERSTYLES } from '../../Constants';
 import ColorPicker from '../ColourPicker';
 import Modal from '../Modal';
 import DataTable from '../Table';
@@ -86,29 +86,30 @@ export default class DeckSidebar extends React.Component {
     let plot_data = [];
     let plot_data_multi = [[], []];
     const notEmpty = data && data.length > 1;
-    plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);  
+    plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);
     let columnDomain = [];
     let columnData = notEmpty ?
       xyObjectByProperty(data, column || barChartVariable) : [];
     const geomType = notEmpty && data[0].geometry.type.toLowerCase();
     // console.log(geomType);
-    if(notEmpty && column && (geomType === 'polygon' ||
-    geomType === 'multipolygon' || "linestring") &&
+    if (notEmpty && column && (geomType === 'polygon' ||
+      geomType === 'multipolygon' || "linestring") &&
       isNumber(data[0].properties[column])) {
-        // we dont need to use generateDomain(data, column)
-        // columnData already has this in its x'es
-        columnDomain = columnData.map(e => e.x);
-        // we will just sort it        
-        columnDomain = sortNumericArray(columnDomain);
-        // console.log(columnDomain);
-        
-        this.props.showLegend(
-          generateLegend(
-            {domain: columnDomain, 
-              title: humanize(column)
-            }
-          )
-        );
+      // we dont need to use generateDomain(data, column)
+      // columnData already has this in its x'es
+      columnDomain = columnData.map(e => e.x);
+      // we will just sort it        
+      columnDomain = sortNumericArray(columnDomain);
+      // console.log(columnDomain);
+
+      this.props.showLegend(
+        generateLegend(
+          {
+            domain: columnDomain,
+            title: humanize(column)
+          }
+        )
+      );
     }
 
     const columnPlot = {
@@ -118,7 +119,7 @@ export default class DeckSidebar extends React.Component {
       fill: 'rgb(18, 147, 154)',
     }
 
-    const resetState = (urlOrName) => {      
+    const resetState = (urlOrName) => {
       this.setState({
         reset: true,
         year: "",
@@ -130,22 +131,22 @@ export default class DeckSidebar extends React.Component {
 
     // reuse for different props
     const generatePercent = (array, prop, n) => {
-      return array && 
-      <div style={{clear: 'both'}}>{
-        array.map(each =>
-          percentDiv(each.x, 100 * each.y / data.length, () => {
-            if (multiVarSelect && multiVarSelect[prop] &&
-              multiVarSelect[prop].has(each.x)) {
-              delete multiVarSelect[prop];
-            } else {
-              multiVarSelect[prop] = new Set([each.x]);
-              this.setState({ multiVarSelect })
-            }
-            onSelectCallback &&
-              onSelectCallback(Object.keys(multiVarSelect).length === 0 ?
-                { what: '' } : { what: 'multi', selected: multiVarSelect })
-          }, dark, n))
-      }</div>
+      return array &&
+        <div style={{ clear: 'both' }}>{
+          array.map(each =>
+            percentDiv(each.x, 100 * each.y / data.length, () => {
+              if (multiVarSelect && multiVarSelect[prop] &&
+                multiVarSelect[prop].has(each.x)) {
+                delete multiVarSelect[prop];
+              } else {
+                multiVarSelect[prop] = new Set([each.x]);
+                this.setState({ multiVarSelect })
+              }
+              onSelectCallback &&
+                onSelectCallback(Object.keys(multiVarSelect).length === 0 ?
+                  { what: '' } : { what: 'multi', selected: multiVarSelect })
+            }, dark, n))
+        }</div>
     }
 
     const plotWith = (t, p) => <SeriesPlot
@@ -175,7 +176,7 @@ export default class DeckSidebar extends React.Component {
             className="side-pane-header">
             <h2>{data && data.length ?
               data.length + " row" + (data.length > 1 ? "s" : "") + "."
-              : this.props.loading? "Loading..." : "Nothing to show"}
+              : this.props.loading ? "Loading..." : "Nothing to show"}
             </h2>
             dataset: {this.state.datasetName}
           </div>
@@ -201,19 +202,21 @@ export default class DeckSidebar extends React.Component {
                   typeof (urlCallback) === 'function'
                     && urlCallback(URL + "/api/stats19");
                   typeof (this.props.showLegend) === 'function' &&
-                  this.props.showLegend(false);
+                    this.props.showLegend(false);
                 }}>Reset</Button>
             }
           </div>
           <div className="side-panel-body">
             <div className="side-panel-body-content">
-                {/* <DateSlider data={yy} multiVarSelect={multiVarSelect}
+              {/* <DateSlider data={yy} multiVarSelect={multiVarSelect}
                   onSelectCallback={(changes) => console.log(changes)} 
                   callback={(changes) => console.log(changes)}/> */}
               {/* range of two values slider is not native html */
-                yearSlider({data: unfilteredData, year, multiVarSelect,
+                yearSlider({
+                  data: unfilteredData, year, multiVarSelect,
                   // for callback we get { year: "",multiVarSelect }
-                  onSelectCallback, callback: (changes) => this.setState(changes)})
+                  onSelectCallback, callback: (changes) => this.setState(changes)
+                })
               }
               {
                 //only if there is such a property
@@ -240,10 +243,10 @@ export default class DeckSidebar extends React.Component {
               {/* TODO: generate this declaritively too */}
               {
                 ["accident_severity", "casualty_type"]
-                .map(e => generatePercent(
-                  propertyCount(data, e), e, e === "casualty_type" ? 2 : 3
+                  .map(e => generatePercent(
+                    propertyCount(data, e), e, e === "casualty_type" ? 2 : 3
                   )
-                )
+                  )
               }
               <hr style={{ clear: 'both' }} />
               {/* {columnDomain.length > 1 &&
@@ -254,8 +257,6 @@ export default class DeckSidebar extends React.Component {
                   <i style={{ fontSize: '2rem' }}
                     className="fa fa-info" />
                 }>
-                  {/* pick a column and vis type */}
-                  <AddVIS data={data} dark={dark} />
                   {/* distribution example */}
                   {
                     ['date', 'age_of_casualty'].map(e => notEmpty &&
@@ -265,11 +266,11 @@ export default class DeckSidebar extends React.Component {
                   {notEmpty &&
                     data[0].properties.hasOwnProperty(['day_of_week']) &&
                     <SeriesPlot
-                    dark={dark}
-                    data={xyObjectByProperty(data, 'day_of_week')}
-                    type={VerticalBarSeries}
-                    plotStyle={{ marginBottom: 100 }}
-                  />}
+                      dark={dark}
+                      data={xyObjectByProperty(data, 'day_of_week')}
+                      type={VerticalBarSeries}
+                      plotStyle={{ marginBottom: 100 }}
+                    />}
                   {notEmpty && plot_data_multi[0].length > 0 &&
                     <MultiLinePlot
                       dark={dark}
@@ -280,7 +281,7 @@ export default class DeckSidebar extends React.Component {
                       plotStyle={{ height: 100, marginBottom: 50 }}
                     />
                   }
-                  {
+                  {/* {
                     notEmpty &&
                     Object.keys(data[0].properties)
                       .filter(p => !isEmptyOrSpaces(p)).length > 0 &&
@@ -307,7 +308,7 @@ export default class DeckSidebar extends React.Component {
                         }}
                       />
                     </>
-                  }
+                  } */}
                   {/* TODO: example of generating vis based on column
                   cloudl now be deleted. */}
                   {<SeriesPlot
@@ -332,6 +333,8 @@ export default class DeckSidebar extends React.Component {
                     plotStyle={{ marginBottom: 100 }} noYAxis={true}
 
                   />}
+                  {/* pick a column and vis type */}
+                  <AddVIS data={data} dark={dark} />
                   {/* {popPyramid({ data, dark: dark })} */}
                 </Tab>
                 <Tab eventKey="2" title={
@@ -341,8 +344,8 @@ export default class DeckSidebar extends React.Component {
                   {notEmpty &&
                     <div>
                       <ColorPicker colourCallback={(color) =>
-                          typeof colourCallback === 'function' &&
-                          colourCallback(color)} />
+                        typeof colourCallback === 'function' &&
+                        colourCallback(color)} />
                       <input
                         type="range"
                         id="radius"
@@ -376,7 +379,7 @@ export default class DeckSidebar extends React.Component {
                       />
                       <h5>Elevation: {elevation}.</h5>
                     </div>
-                    }
+                  }
                   {notEmpty &&
                     <>
                       <h6>Deck Layer:</h6>
@@ -423,7 +426,7 @@ export default class DeckSidebar extends React.Component {
                       }
                     }}
                   >Subset by map boundary</Checkbox>
-                  
+
                 </Tab>
                 {/* <Tab eventKey="3" title={
                   <i style={{ fontSize: '2rem' }}
