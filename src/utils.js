@@ -13,7 +13,7 @@ import qs from 'qs'; // warning: importing it otherways would cause minificatino
 
 import mapping from './location-icon-mapping.json';
 import Constants from './Constants';
-import { isString, isNumber } from './JSUtils.js';
+import { isString, isNumber, isDate } from './JSUtils.js';
 import IconClusterLayer from './icon-cluster-layer';
 import { ArcLayer, PathLayer } from '@deck.gl/layers';
 
@@ -86,7 +86,10 @@ const xyObjectByProperty = (data, property, noNulls = true) => {
   const map = new Map()
   data.forEach(feature => {
     let value = feature.properties[property];
-    if (typeof (value) === 'string' && value.split("-")[0]) {
+    // still hardocoded, using .getYear might be better but not
+    // perfect
+    if (typeof (value) === 'string' &&
+    value.split("-").length === 3) {
       value = +(value.split("-")[0])
     }
     if (noNulls && value !== null) { // remove nulls here

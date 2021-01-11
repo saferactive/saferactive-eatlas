@@ -257,14 +257,19 @@ export default class DeckSidebar extends React.Component {
                   {/* pick a column and vis type */}
                   <AddVIS data={data} dark={dark} />
                   {/* distribution example */}
-                  {notEmpty &&
-                    data[0].properties.hasOwnProperty(['date']) &&
-                    plotWith("Change", "date")
+                  {
+                    ['date', 'age_of_casualty'].map(e => notEmpty &&
+                      data[0].properties.hasOwnProperty([e]) &&
+                      plotWith(humanize(e), e))
                   }
                   {notEmpty &&
-                    data[0].properties.hasOwnProperty(['age_of_casualty']) &&
-                    plotWith(humanize('age_of_casualty'), 'age_of_casualty')
-                  }
+                    data[0].properties.hasOwnProperty(['day_of_week']) &&
+                    <SeriesPlot
+                    dark={dark}
+                    data={xyObjectByProperty(data, 'day_of_week')}
+                    type={VerticalBarSeries}
+                    plotStyle={{ marginBottom: 100 }}
+                  />}
                   {notEmpty && plot_data_multi[0].length > 0 &&
                     <MultiLinePlot
                       dark={dark}
