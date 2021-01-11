@@ -148,6 +148,17 @@ export default class DeckSidebar extends React.Component {
       }</div>
     }
 
+    const plotWith = (t, p) => <SeriesPlot
+      dark={dark}
+      title={t} noYAxis={true}
+      plotStyle={{ height: 100 }} noLimit={true}
+      type={LineSeries}
+      // sorts the results if x is a number
+      // TODO: do we want to do this?
+      // also think about sorting according to y
+      data={xyObjectByProperty(data, p)}
+    />
+
     return (
       <>
         <div
@@ -247,17 +258,12 @@ export default class DeckSidebar extends React.Component {
                   <AddVIS data={data} dark={dark} />
                   {/* distribution example */}
                   {notEmpty &&
+                    data[0].properties.hasOwnProperty(['date']) &&
+                    plotWith("Change", "date")
+                  }
+                  {notEmpty &&
                     data[0].properties.hasOwnProperty(['age_of_casualty']) &&
-                    <SeriesPlot
-                      dark={dark}
-                      title="Casualty age" noYAxis={true}
-                      plotStyle={{ height: 100 }} noLimit={true}
-                      type={LineSeries}
-                      // sorts the results if x is a number
-                      // TODO: do we want to do this?
-                      // also think about sorting according to y
-                      data={xyObjectByProperty(data, "age_of_casualty")}
-                    />
+                    plotWith(humanize('age_of_casualty'), 'age_of_casualty')
                   }
                   {notEmpty && plot_data_multi[0].length > 0 &&
                     <MultiLinePlot

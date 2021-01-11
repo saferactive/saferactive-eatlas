@@ -86,8 +86,8 @@ const xyObjectByProperty = (data, property, noNulls = true) => {
   const map = new Map()
   data.forEach(feature => {
     let value = feature.properties[property];
-    if (typeof (value) === 'string' && value.split("/")[2]) {
-      value = value.split("/")[2]
+    if (typeof (value) === 'string' && value.split("-")[0]) {
+      value = +(value.split("-")[0])
     }
     if (noNulls && value !== null) { // remove nulls here
       if (map.get(value)) {
