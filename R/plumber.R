@@ -90,7 +90,7 @@ walking.rnet = geojsonsf::sf_geojson(walking.rnet)
 #' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<xmax:double>/
 #' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<ymax:double>
 #'
-subs_geojson <- function(res, xmin, ymin, xmax, ymax){
+subs_geojson <- function(res, xmin, ymin, xmax, ymax, download = ""){
   mm <- c(xmin, ymin, xmax, ymax)
   subset_geojson <- NULL
   print(mm)
@@ -119,6 +119,9 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax){
     }
   } else {
     return(m)
+  }
+  if(identical(download, "true")) {
+    res$headers$`Content-disposition` <- "attachment; filename=sa-crashes.json"
   }
   res$headers$`Content-type` <- "application/json"
   res$body <- subset_geojson

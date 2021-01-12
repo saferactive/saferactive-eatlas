@@ -125,6 +125,7 @@ export default class Welcome extends React.Component {
       // URL + "/api/url?q=" + aURL : // get the server to parse it 
       aURL : // do not get the server to parse it 
       URL + defualtURL + "/0/0/0/0"; // 0/0/0/0 is the default bounding
+      // no ending slash by choice for this versio of plumber
 
     fetchData(fullURL, (data, error) => {
       if (!error) {
@@ -132,7 +133,8 @@ export default class Welcome extends React.Component {
         this.setState({
           loading: false,
           data: data,
-          alert: customError || null
+          alert: customError || null,
+          apiURL: fullURL
         })
         this._fitViewport(data)
         this._generateLayer()
@@ -544,6 +546,7 @@ export default class Welcome extends React.Component {
             this._fitViewport(bboxLonLat)
           }}
           showLegend={(legend) => this.setState({ legend })}
+          apiURL={this.state.apiURL}
         />
         {
           legend && (geomType === 'polygon' ||

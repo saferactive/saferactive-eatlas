@@ -4,9 +4,9 @@ import {
   FormControl, Glyphicon, Checkbox
 } from 'react-bootstrap';
 import { Button, KIND, SIZE } from 'baseui/button';
+import { StyledLink } from "baseui/link";
 
 import './DeckSidebar.css';
-import DataInput from '../DataInput';
 import MapboxBaseLayers from '../MapboxBaseLayers';
 import {
   xyObjectByProperty, percentDiv,
@@ -25,7 +25,7 @@ import DataTable from '../Table';
 import { yearSlider } from '../Showcases/Widgets';
 import { crashes_plot_data } from '../Showcases/Plots';
 import SeriesPlot from '../Showcases/SeriesPlot';
-import { isEmptyOrSpaces, isNumber } from '../../JSUtils';
+import { isNumber } from '../../JSUtils';
 import MultiSelect from '../MultiSelect';
 import AddVIS from '../AddVIS';
 import MultiLinePlot from '../Showcases/MultiLinePlot';
@@ -178,10 +178,9 @@ export default class DeckSidebar extends React.Component {
               data.length + " row" + (data.length > 1 ? "s" : "") + "."
               : this.props.loading ? "Loading..." : "Nothing to show"}
             </h2>
-            dataset: {this.state.datasetName}
           </div>
           <div>
-            <DataInput
+            {/* <DataInput
               toggleOpen={() => typeof toggleOpen === 'function' && toggleOpen()}
               urlCallback={(url, geojson, name) => {
                 resetState(url || name);
@@ -189,7 +188,7 @@ export default class DeckSidebar extends React.Component {
                   && urlCallback(url, geojson);
                 typeof (toggleOpen) === 'function' && toggleOpen()
               }
-              } />
+              } /> */}
             <Modal
               toggleOpen={() => typeof toggleOpen === 'function' && toggleOpen()}
               component={<DataTable data={data} />} />
@@ -204,6 +203,17 @@ export default class DeckSidebar extends React.Component {
                   typeof (this.props.showLegend) === 'function' &&
                     this.props.showLegend(false);
                 }}>Reset</Button>
+            }
+            {notEmpty &&
+              <StyledLink href={this.props.apiURL + "&download=true"}>
+                {<i
+                style={{
+                  margin: 5,
+                  cursor: 'pointer',
+                  fontSize: '1.5em'
+                }}
+                className={"fa fa-download"}></i>}
+                </StyledLink>
             }
           </div>
           <div className="side-panel-body">
