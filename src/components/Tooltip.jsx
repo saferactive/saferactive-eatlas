@@ -114,12 +114,13 @@ export default class Tooltip extends React.Component {
               <MultiLinePlot
                 data={[...severity_data_separate, crashes_data]}
                 legend={[...severity_keys, 'Total']}
-                title="Crashes" noYAxis={true}
+                title="Crashes" noYAxis={true} dark={true}
                 plotStyle={{ height: 100, marginBottom: 50 }}
               /> :
               <SeriesPlot
-                title={severity_keys[0] ? "Total (" + severity_keys[0] + ")" :
-                  "Total"}
+                dark={true} noYAxis={true}
+                title={severity_keys && severity_keys[0] ? 
+                  "Total (" + severity_keys[0] + ")" : "Total"}
                 data={crashes_data} type={LineSeries} />
           }
         </div>
