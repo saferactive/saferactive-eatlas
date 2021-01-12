@@ -80,6 +80,7 @@ export default class Tooltip extends React.Component {
             })
         })
     }
+    // console.log(hoveredObject);
     // console.log(crashes_data);
     // console.log(severity_data_separate);
 
@@ -131,14 +132,16 @@ export default class Tooltip extends React.Component {
   _listPropsAndValues(hoveredObject, all = false) {
     let DATA = []
     const props = hoveredObject.properties;
+    const n = 6;
     if (props) {
-      DATA = Object.keys(props)
+      const keys = Object.keys(props)
+      DATA = keys
+        .slice(1, all ? keys.length : n)
         .map(p => {
           return ([humanize(p), props[p]])
         })
     } else { // two points passed go through first one
       const keys = Object.keys(hoveredObject.points[0].properties);
-      const n = 6;
       DATA = keys
         .slice(1, all ? keys.length : n) // miss accident_index
         .map(p => {

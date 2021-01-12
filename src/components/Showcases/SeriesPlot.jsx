@@ -7,6 +7,7 @@ import {
 import { format } from 'd3-format';
 
 import { shortenName } from '../../utils';
+import { isArray } from '../../JSUtils';
 
 const W = 250;
 const FlexibleXYPlot = makeWidthFlexible(XYPlot);
@@ -25,9 +26,9 @@ export default function SeriesPlot(options) {
   const limit = 10;
 
   const data = options.type !== MarkSeries && !options.noLimit &&
-    options.data.length > limit ? options.data.slice(0, limit)
+  isArray(options.data) && options.data.length > limit ? options.data.slice(0, limit)
     : options.data;
-  const dataWithColor = data.map((d, i) => ({
+  const dataWithColor = data && data.map((d, i) => ({
     ...d,
     // if selected return 0 which is:
     // ['rgb(239, 93, 40)', 'rgb(18, 147, 154)']
@@ -36,8 +37,7 @@ export default function SeriesPlot(options) {
 
   const { plotStyle, title, noXAxis, noYAxis,
     onValueClick, onDragSelected } = options;
-      
-  return data && data.length > 1 &&
+  return data && data.length > 1 ?
     // https://github.com/uber/react-vis/issues/584#issuecomment-401693372
     <div className="unselectable"
       style={{ position: 'relative' }}
@@ -148,7 +148,7 @@ export default function SeriesPlot(options) {
         {hint && <Hint value={hint} />}
       </FlexibleXYPlot>
       {x && x1 && rect}
-    </div>;
+    </div> : null;
 }
 
 function isWithinRect(options) {

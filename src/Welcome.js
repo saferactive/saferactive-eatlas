@@ -218,7 +218,8 @@ export default class Welcome extends React.Component {
     let layerStyle = (filter && filter.what ===
       'layerStyle' && filter.selected) || this.state.layerStyle || 'grid';
     if (geomType !== "point") layerStyle = "geojson"
-    if (data.length < iconLimit && !column &&
+    if (data.length < iconLimit && !column && (!filter ||
+      filter.what !== 'layerStyle') && !this.state.layerStyle &&
       geomType === "point") layerStyle = 'icon';
     const options = {
       radius: radius ? radius : this.state.radius,
