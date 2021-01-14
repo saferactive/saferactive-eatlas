@@ -134,7 +134,6 @@ export default class Welcome extends React.Component {
           loading: false,
           data: data,
           alert: customError || null,
-          apiURL: fullURL
         })
         this._fitViewport(data)
         this._generateLayer()
@@ -393,7 +392,7 @@ export default class Welcome extends React.Component {
               loading: false
             });
             // update alert?
-            console.log(error);
+            // console.log(error);
           }
         });
     }
@@ -547,7 +546,6 @@ export default class Welcome extends React.Component {
             this._fitViewport(bboxLonLat)
           }}
           showLegend={(legend) => this.setState({ legend })}
-          apiURL={this.state.apiURL}
         />
         {
           legend && (geomType === 'polygon' ||

@@ -38,10 +38,6 @@ export default class DeckSidebar extends React.Component {
     this.state = {
       radius: 100,
       elevation: 4,
-      // must match the order in plumber.R
-      all_road_types: ["Dual carriageway",
-        "Single carriageway", "Roundabout", "Unknown",
-        "Slip road", "One way street"],
       year: "",
       reset: false,
       multiVarSelect: {},
@@ -76,8 +72,7 @@ export default class DeckSidebar extends React.Component {
    * Partly because we like to load from a URL.
    */
   render() {
-    const { elevation,
-      radius, all_road_types, year, datasetName,
+    const { elevation, radius, year, datasetName,
       subsetBoundsChange, multiVarSelect, barChartVariable } = this.state;
     const { onChangeRadius, onChangeElevation,
       onSelectCallback, data, colourCallback, unfilteredData,
@@ -205,7 +200,15 @@ export default class DeckSidebar extends React.Component {
                 }}>Reset</Button>
             }
             {notEmpty &&
-              <StyledLink href={this.props.apiURL + "&download=true"}>
+              <StyledLink 
+              download="sa-crashes.geojson"  
+              href={
+                "data:text/json;charset=utf-8," + 
+                encodeURIComponent(JSON.stringify({
+                  type: 'FeatureCollection',
+                  features: data
+                }))
+              }>
                 {<i
                 style={{
                   margin: 5,
@@ -227,27 +230,6 @@ export default class DeckSidebar extends React.Component {
                   // for callback we get { year: "",multiVarSelect }
                   onSelectCallback, callback: (changes) => this.setState(changes)
                 })
-              }
-              {
-                //only if there is such a property
-                data && data.length > 1 && data[0].properties['road_type'] &&
-                <MultiSelect
-                  title={humanize('road_type')}
-                  filter='road_type' // showcase/hardcode section
-                  multiVarSelect={multiVarSelect}
-                  // showcase/hardcode section all_road_types
-                  values={all_road_types.map(e => ({ id: e, value: e }))}
-                  onSelectCallback={(filter) => {
-                    onSelectCallback && onSelectCallback(filter);
-                    this.setState({
-                      multiVarSelect: filter.selected || {} // not ""
-                    })
-                  }}
-                  // sync state
-                  value={multiVarSelect && multiVarSelect['road_type'] &&
-                    Array.from(multiVarSelect['road_type'])
-                      .map(e => ({ id: e, value: e }))}
-                />
               }
               <br />
               {/* TODO: generate this declaritively too */}

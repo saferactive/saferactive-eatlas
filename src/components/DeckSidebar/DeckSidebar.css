@@ -91,6 +91,7 @@
 
 .space {
   flex:1;
+  min-height: 20px;
 }
 
 .search-form {

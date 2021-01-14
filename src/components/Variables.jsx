@@ -44,17 +44,22 @@ export default function Variables(props) {
       value: e
     }))
 
+  // unique set of keys
+  let syncColumns = Array.from(new Set(columns.map(e => e.value).concat(
+    Object.keys(multiVarSelect).filter(e => e !== "date") // hardcode
+  )));
+  // populate baseweb objects using description
+  syncColumns = syncColumns.map(e => ({
+    // Format: Column Name [String]
+    id: humanize(e) + " [" + description[e].name + "]",
+    value: e
+  }))
+  // console.log(columns);
+  // console.log(syncColumns);
+  // use synced column names
   return (
     <div style={props.style}>
-      {/* Current solution goes back to when application was 
-            developed without component libraries in mind (like baseweb).
-            This revamp will be using baseweb.
-            
-            Minimalist approach: 
-            using search + multi-select for both 
-            column names and their chosen values.  */
-      }
-          Column to filter:
+      Column to filter:
       <Select
         labelKey="id"
         valueKey="value"
@@ -77,11 +82,11 @@ export default function Variables(props) {
             onSelectCallback(multiVarSelect)
           setColumns(value)
         }}
-        value={columns}
+        value={syncColumns}
         options={dataCols}
       />
       {
-        columns && columns.map(e => e.value)
+        syncColumns && syncColumns.map(e => e.value)
           .map(key => {
             const columnValues = [];
             unfilteredData.forEach(feature =>
@@ -105,6 +110,10 @@ export default function Variables(props) {
                   typeof (onSelectCallback) === 'function' &&
                     onSelectCallback(filter.selected || {});
                 }}
+                value={multiVarSelect[key] &&
+                  Array.from(multiVarSelect[key])
+                    .map(e => ({ id: e + "", value: e + "" }))
+                }
               />
             </>
           })
