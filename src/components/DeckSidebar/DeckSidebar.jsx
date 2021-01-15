@@ -450,9 +450,9 @@ export default class DeckSidebar extends React.Component {
             <div className="space"></div>
             <form className="search-form" onSubmit={(e) => {
               e.preventDefault();
-              // console.log(this.state.search);
+              console.log(this.state.search);
               searchNominatom(this.state.search, (json) => {
-                // console.log(json && json.length > 0 && json[0].boundingbox);
+                console.log(json && json.length > 0 && json[0].boundingbox);
                 let bbox = json && json.length > 0 && json[0].boundingbox;
                 bbox = bbox && bbox.map(num => +(num))
                 typeof onlocationChange === 'function' && bbox &&
