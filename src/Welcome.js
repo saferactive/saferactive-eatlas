@@ -40,6 +40,7 @@ import './App.css';
 import Tooltip from './components/Tooltip';
 import { sfType } from './geojsonutils';
 import { isNumber, isArray } from './JSUtils';
+import Modal from './components/Modal';
 
 const URL = (process.env.NODE_ENV === 'development' ? Constants.DEV_URL : Constants.PRD_URL);
 const defualtURL = "/api/stats19";
@@ -466,6 +467,15 @@ export default class Welcome extends React.Component {
             // section=using-the-built-in-event-handling
             onClick={(e) => {
               console.log(e);
+              // this.setState({
+              //   tooltip: <Modal 
+              //   open={true} 
+              //   noButton={true} 
+              //   toggleOpen={() => {
+              //     this.setState({tooltip: null})
+              //   }}
+              //   />
+              // })
               if (!e.layer && coords) {
                 this.setState({ coords: null })
                 this._generateLayer()

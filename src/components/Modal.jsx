@@ -8,12 +8,13 @@ import {
 } from 'baseui/modal';
 
 export default (props) => {
-  const [open, setOpen] = React.useState(false);
-  const { toggleOpen, title, component, button } = props;
+  const [open, setOpen] = React.useState(props.open || false);
+  const { toggleOpen, title, component, button,
+  noButton } = props;
 
   return (
     <React.Fragment>
-      <i
+      {!noButton && <i
         style={{
           margin: 5,
           cursor: 'pointer',
@@ -23,7 +24,7 @@ export default (props) => {
           typeof toggleOpen === 'function' && toggleOpen();
           setOpen(true);
         }}
-        className={button || "fa fa-table"}></i>
+        className={button || "fa fa-table"}></i>}
       <Modal size="80%"
         onClose={() => {
           typeof (toggleOpen) === 'function' && toggleOpen()

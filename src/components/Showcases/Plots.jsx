@@ -83,9 +83,9 @@ const popPyramid = (options) => {
 function crashes_plot_data(notEmpty, data, plot_data, plot_data_multi) {
   if (notEmpty) {
     Object.keys(data[1].properties).forEach(each => {
-      if (each.match(/date|datetime|datestamp|timestamp/g) &&
+      if (each.match(/date/g) &&
         typeof (data[1].properties[each]) === 'string' &&
-        data[1].properties[each].split("/")[2]) { //date in 09/01/2019 HARDCODE
+        data[1].properties[each].split("-")[0]) { //date in 09/01/2019 HARDCODE
         plot_data = xyObjectByProperty(data, "date");
         const mf = propertyCountByProperty(data, "sex_of_casualty", plot_data.map(e => e.x), "date");
         plot_data.length > 1 && // more than one years

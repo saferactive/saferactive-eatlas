@@ -23,12 +23,10 @@ import Modal from '../Modal';
 import DataTable from '../Table';
 
 import { yearSlider } from '../Showcases/Widgets';
-import { crashes_plot_data } from '../Showcases/Plots';
 import SeriesPlot from '../Showcases/SeriesPlot';
 import { isNumber } from '../../JSUtils';
 import MultiSelect from '../MultiSelect';
 import AddVIS from '../AddVIS';
-import MultiLinePlot from '../Showcases/MultiLinePlot';
 
 const URL = (process.env.NODE_ENV === 'development' ? DEV_URL : PRD_URL);
 
@@ -78,10 +76,10 @@ export default class DeckSidebar extends React.Component {
       onSelectCallback, data, colourCallback, unfilteredData,
       toggleSubsetBoundsChange, urlCallback, alert,
       onlocationChange, column, dark, toggleOpen } = this.props;
-    let plot_data = [];
-    let plot_data_multi = [[], []];
+    // let plot_data = [];
+    // let plot_data_multi = [[], []];
     const notEmpty = data && data.length > 1;
-    plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);
+    // plot_data = crashes_plot_data(notEmpty, data, plot_data, plot_data_multi);
     let columnDomain = [];
     let columnData = notEmpty ?
       xyObjectByProperty(data, column || barChartVariable) : [];
@@ -263,7 +261,7 @@ export default class DeckSidebar extends React.Component {
                       type={VerticalBarSeries}
                       plotStyle={{ marginBottom: 100 }}
                     />}
-                  {notEmpty && plot_data_multi[0].length > 0 &&
+                  {/* {notEmpty && plot_data_multi[0].length > 0 &&
                     <MultiLinePlot
                       dark={dark}
                       data={
@@ -272,7 +270,7 @@ export default class DeckSidebar extends React.Component {
                       title="Crashes" noYAxis={true}
                       plotStyle={{ height: 100, marginBottom: 50 }}
                     />
-                  }
+                  } */}
                   {/* {
                     notEmpty &&
                     Object.keys(data[0].properties)
