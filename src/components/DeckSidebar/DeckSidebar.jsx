@@ -426,7 +426,9 @@ export default class DeckSidebar extends React.Component {
                 </Tab> */}
                 <Tab eventKey="3" title={
                   <i style={{ fontSize: '2rem' }}
-                    className="fa fa-filter" />
+                    className="fa fa-filter" > {
+                      multiVarSelect && Object.keys(multiVarSelect).length
+                    } </i>
                 }>
                   {
                     unfilteredData && unfilteredData.length > 0 &&
