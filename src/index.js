@@ -28,7 +28,7 @@ L.Icon.Default.mergeOptions({
  * 2. keep App.js clear for React application.
  */
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <App />
   </BrowserRouter>, document.getElementById('root'));
 
