@@ -12,8 +12,9 @@ import {
 import qs from 'qs'; // warning: importing it otherways would cause minificatino issue.
 
 import mapping from './location-icon-mapping.json';
+import atlas from './img/icons.png'
 import Constants from './Constants';
-import { isString, isNumber, isDate } from './JSUtils.js';
+import { isString, isNumber } from './JSUtils.js';
 import IconClusterLayer from './icon-cluster-layer';
 import { ArcLayer, PathLayer } from '@deck.gl/layers';
 
@@ -175,7 +176,7 @@ const generateDeckLayer = (name, data, renderTooltip, options) => {
       id: 'icon-layer',
       data,
       pickable: true,
-      iconAtlas: 'icons.png',
+      iconAtlas: atlas,
       iconMapping: mapping,
       sizeScale: 60,
       getPosition: d => d.geometry.coordinates,

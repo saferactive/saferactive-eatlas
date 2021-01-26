@@ -28,6 +28,8 @@ export default function Variables(props) {
     unfilteredData } = props;
   const [columns, setColumns] = useState(Object.keys(multiVarSelect))
 
+  if (!unfilteredData) return null;
+  
   if (unfilteredData && Object.keys(unfilteredData[0].properties)
     .filter(p => !isEmptyOrSpaces(p)).length === 0) {
     return (
