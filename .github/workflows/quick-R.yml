@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
       - name: install plumber deps
-        run: apt update && apt install libsodium-dev
+        run: brew update && brew install libsodium udunits pkg-config gdal
       - name: Rscript plumber.R
         run: | 
           Rscript -e 'install.packages("plumber");r = plumber::plumb(file.path("R", "plumber.R"))'
