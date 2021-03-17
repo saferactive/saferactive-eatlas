@@ -40,7 +40,7 @@ import './App.css';
 import Tooltip from './components/Tooltip';
 import { sfType } from './geojsonutils';
 import { isNumber, isArray } from './JSUtils';
-import Modal from './components/Modal';
+import { throttle } from 'lodash';
 
 const URL = (process.env.NODE_ENV === 'development' ? Constants.DEV_URL : Constants.PRD_URL);
 const defualtURL = "/api/stats19";
@@ -104,6 +104,9 @@ export default class Welcome extends React.Component {
     this._renderTooltip = this._renderTooltip.bind(this);
     this._fetchAndUpdateState = this._fetchAndUpdateState.bind(this);
     this._fitViewport = this._fitViewport.bind(this);
+    this._updateURL = this._updateURL.bind(this);
+    // TODO: can let user change the 300
+    this._myThrottle = throttle((v) => this._updateURL(v), 300)
   }
 
   componentDidMount() {
@@ -130,7 +133,6 @@ export default class Welcome extends React.Component {
 
     fetchData(fullURL, (data, error) => {
       if (!error) {
-        // this._updateURL(viewport)
         this.setState({
           loading: false,
           data: data,
@@ -426,7 +428,7 @@ export default class Welcome extends React.Component {
           }}
           mapStyle={mapStyle}
           onViewportChange={(viewport) => {
-            this._updateURL(viewport)
+            this._myThrottle(viewport)
             this.setState({ viewport })
           }}
           // see
@@ -573,4 +575,5 @@ export default class Welcome extends React.Component {
       </div>
     );
   }
+  _myThrottle
 }

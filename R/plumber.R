@@ -132,12 +132,12 @@ subset_dt_sf <- function(xmin, ymin, xmax, ymax){
   subdt <- data.table()
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
      !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
-    subdt <- dt[lon >= xmin & lon < xmax & lat >= ymin & lat < ymax, -c("lon", "lat")]
+    subdt <- acc[longitude >= xmin & longitude < xmax & latitude >= ymin & latitude < ymax, -c("lon", "lat")]
   } else {
     stop("bounding box is required.")
   }
   # quick solution via sf again!
-  subdt <- st_as_sf(subdt)
+  subdt <- st_as_sf(subdt, coords=c("longitude", "latitude"))
 }
 
 #' Find a particular accident details
@@ -196,7 +196,7 @@ list()
 ptm <- proc.time()
 # TODO get Dockerfile volume right
 # years = c(1979,2005,2015:2019)
-years = c(2018)
+years = c(2010:2019)
 dd = "."
 if(nchar(Sys.getenv("STAST19_DATA_DIR")) > 0) dd = Sys.getenv("STAST19_DATA_DIR")
 if(!dir.exists(dd)) {
@@ -205,7 +205,7 @@ if(!dir.exists(dd)) {
   dir.create(dd, recursive = TRUE)
 }
 # read
-acc = get_stats19(year = years, data_dir = dd, type = "acc")
+acc = get_stats19(year = years, data_dir = dd, type = "acc")[,1:10]
 cas = get_stats19(year = years, data_dir = dd, type = "cas")
 veh = get_stats19(year = years, data_dir = dd, type = "veh")
 
