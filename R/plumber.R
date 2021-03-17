@@ -196,7 +196,7 @@ list()
 ptm <- proc.time()
 # TODO get Dockerfile volume right
 # years = c(1979,2005,2015:2019)
-years = c(2015:2019)
+years = c(2018:2019)
 dd = "."
 if(nchar(Sys.getenv("STAST19_DATA_DIR")) > 0) dd = Sys.getenv("STAST19_DATA_DIR")
 if(!dir.exists(dd)) {
