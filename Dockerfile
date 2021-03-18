@@ -77,7 +77,7 @@ RUN R -e 'install.packages("devtools")'
 RUN R -e 'install.packages("data.table")'
 
 # RUN R -e 'install.packages(c("geojsonsf", dependencies=T))'
-# RUN R -e 'devtools::install_github("ATFutures/geoplumber")'
+RUN R -e 'devtools::install_github("saferactive/trafficalmr")'
 
 # add node/npm
 RUN apt-get -y install curl gnupg
