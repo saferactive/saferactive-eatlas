@@ -1,7 +1,7 @@
 packages <- c("sf", "geojsonsf", "curl", "data.table", "stats19", "devtools", "trafficalmr")
 p <- setdiff(packages, rownames(installed.packages()))
 if (length(p) > 0) {
-  install.packages(p <- p[p != "trafficalmr"], repos='http://cran.us.r-project.org')
+  install.packages(p[p != "trafficalmr"], repos='http://cran.us.r-project.org')
   if(is.element("trafficalmr", p)) {
     message("Getting saferactive/trafficalmr ...")
     devtools::install_github("saferactive/trafficalmr")
