@@ -2,7 +2,7 @@ name: Check valid plumber.R file
 
 on:
   push:
-    branches: master
+    branches: [master, dev]
 
 jobs:
   Rscript:
@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
+      - name: install plumber deps
+        run: brew update && brew install libsodium udunits pkg-config gdal
       - name: Rscript plumber.R
         run: | 
           Rscript -e 'install.packages("plumber");r = plumber::plumb(file.path("R", "plumber.R"))'

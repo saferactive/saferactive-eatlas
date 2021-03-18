@@ -47,13 +47,14 @@ export default class DeckSidebar extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const { data, alert, loading } = this.props;
-    const { elevation, radius, reset,
-      barChartVariable } = this.state;
+    const { elevation, radius, reset, subsetBoundsChange,
+      barChartVariable,  } = this.state;
     // avoid rerender as directly operating on document.get* 
     // does not look neat. Keeping it React way.
     if (reset !== nextState.reset ||
       elevation !== nextState.elevation ||
       radius !== nextState.radius ||
+      subsetBoundsChange !== nextState.subsetBoundsChange ||
       alert !== nextProps.alert ||
       loading !== nextProps.loading ||
       barChartVariable !== nextState.barChartVariable) return true;
@@ -239,9 +240,16 @@ export default class DeckSidebar extends React.Component {
                   )
               }
               <hr style={{ clear: 'both' }} />
-              {/* {columnDomain.length > 1 &&
-              <Boxplot data={columnDomain}/>} */}
-
+              <Checkbox
+                checked={subsetBoundsChange}
+                onChange={() => {
+                  // needed for subsequent parent call
+                  this.setState({ subsetBoundsChange: !subsetBoundsChange })
+                  if (toggleSubsetBoundsChange && typeof (toggleSubsetBoundsChange) === 'function') {
+                    toggleSubsetBoundsChange(!subsetBoundsChange) //starts with false
+                  }
+                }}
+              >Subset by map boundary</Checkbox>
               <Tabs defaultActiveKey={"1"} id="main-tabs">
                 <Tab eventKey="1" title={
                   <i style={{ fontSize: '2rem' }}
@@ -261,44 +269,6 @@ export default class DeckSidebar extends React.Component {
                       type={VerticalBarSeries}
                       plotStyle={{ marginBottom: 100 }}
                     />}
-                  {/* {notEmpty && plot_data_multi[0].length > 0 &&
-                    <MultiLinePlot
-                      dark={dark}
-                      data={
-                        [...plot_data_multi, plot_data]
-                      } legend={["Male", "Female", "Total"]}
-                      title="Crashes" noYAxis={true}
-                      plotStyle={{ height: 100, marginBottom: 50 }}
-                    />
-                  } */}
-                  {/* {
-                    notEmpty &&
-                    Object.keys(data[0].properties)
-                      .filter(p => !isEmptyOrSpaces(p)).length > 0 &&
-                    <>
-                      <h6>Column for layer:</h6>
-                      <MultiSelect
-                        title="Choose Column"
-                        single={true}
-                        values={
-                          Object.keys(data[0].properties).map(e =>
-                            ({ id: humanize(e), value: e }))
-                        }
-                        onSelectCallback={(selected) => {
-                          // array of seingle {id: , value: } object
-                          const newBarChartVar = (selected && selected[0]) ?
-                            selected[0].value : barChartVariable;
-                          this.setState({
-                            barChartVariable: newBarChartVar
-                          });
-                          typeof onSelectCallback === 'function' &&
-                            onSelectCallback({
-                              what: 'column', selected: newBarChartVar
-                            });
-                        }}
-                      />
-                    </>
-                  } */}
                   {/* TODO: example of generating vis based on column
                   cloudl now be deleted. */}
                   {<SeriesPlot
@@ -406,17 +376,6 @@ export default class DeckSidebar extends React.Component {
                       })
                     }
                   />
-                  <Checkbox
-                    checked={subsetBoundsChange}
-                    onChange={() => {
-                      // needed for subsequent parent call
-                      this.setState({ subsetBoundsChange: !subsetBoundsChange })
-                      if (toggleSubsetBoundsChange && typeof (toggleSubsetBoundsChange) === 'function') {
-                        toggleSubsetBoundsChange(!subsetBoundsChange) //starts with false
-                      }
-                    }}
-                  >Subset by map boundary</Checkbox>
-
                 </Tab>
                 {/* <Tab eventKey="3" title={
                   <i style={{ fontSize: '2rem' }}

@@ -119,8 +119,10 @@ export default class Welcome extends React.Component {
    * 
    * @param {String} aURL to use if not default `/api/stats19` is used.
    * @param {Object} customError to use in case of urlCallback object/urls.
+   * @param {Boolean} fitView whether viewState has been set externally,
+   * default is true.
    */
-  _fetchAndUpdateState(aURL, customError) {
+  _fetchAndUpdateState(aURL, customError, fitView = true) {
     if (aURL && !isURL(aURL)) return;
     if (customError && typeof (customError) !== 'object') return;
     // TODO: more sanity checks?
@@ -132,18 +134,19 @@ export default class Welcome extends React.Component {
       // no ending slash by choice for this versio of plumber
 
     fetchData(fullURL, (data, error) => {
-      if (!error) {
+      if (!error && data.features) {
         this.setState({
           loading: false,
           data: data,
           alert: customError || null,
         })
-        this._fitViewport(data)
+        fitView && this._fitViewport(data)
         this._generateLayer()
       } else {
         this.setState({
           loading: false,
-          alert: { content: 'Could not reach: ' + fullURL }
+          alert: error ? { content: 'Could not reach: ' + fullURL } :
+          {content: data.message}
         })
         //network error?
       }
@@ -373,10 +376,10 @@ export default class Welcome extends React.Component {
   }
 
   _fetchDataWithBounds() {
-    const { subsetBoundsChange, loading } = this.state;
+    const { subsetBoundsChange } = this.state;
     const bounds = this.map && this.map.getBounds();
     // console.log(bounds, subsetBoundsChange);
-    if (!loading && bounds && subsetBoundsChange) {
+    if (bounds && subsetBoundsChange) {
       this.setState({ loading: true });
       const box = getBbx(bounds);
       // console.log("bounds", box);
@@ -385,24 +388,11 @@ export default class Welcome extends React.Component {
       //TODO: refactor the rest to use _fetchAndUpdateState
       // just needs switch to ignore refitting window
       // also needs handling "zoom in" message
-      fetchData(URL + defualtURL + "/" + xmin + "/" +
-        ymin + "/" + xmax + "/" + ymax,
-        (data, error) => {
-          if (!error && data.features) {
-            this.setState({
-              data: data,
-              loading: false
-            });
-            this._generateLayer();
-          } else {
-            this.setState({
-              // alert?
-              loading: false
-            });
-            // update alert?
-            // console.log(error);
-          }
-        });
+      let r = 0.05
+      if(xmax - xmin < 3*r || ymax - ymin < 3*r) r = 0
+      const u = URL + defualtURL + "/" + (xmin + r) + "/" +
+      (ymin + r/2) + "/" + (xmax - r) + "/" + (ymax - r/2)
+      this._fetchAndUpdateState(u, undefined, false)
     }
   }
 
@@ -555,10 +545,9 @@ export default class Welcome extends React.Component {
           onChangeElevation={(value) => this._generateLayer({ elevation: value })}
           toggleSubsetBoundsChange={(checked) => {
             this.setState({
-              loading: checked,
               subsetBoundsChange: checked
             })
-            checked && this._fetchAndUpdateState();
+            checked && this._fetchDataWithBounds();
           }}
           onlocationChange={(bboxLonLat) => {
             this._fitViewport(undefined, bboxLonLat)
