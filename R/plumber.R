@@ -204,14 +204,15 @@ list()
 ptm <- proc.time()
 # TODO get Dockerfile volume right
 # years = c(1979,2005,2015:2019)
-years = c(2018:2019)
-dd = "."
+years = c(2015:2019)
+dd = file.path(getwd(), "dft-data")
 if(nchar(Sys.getenv("STAST19_DATA_DIR")) > 0) dd = Sys.getenv("STAST19_DATA_DIR")
 if(!dir.exists(dd)) {
   # maybe it does not exist due to volume error or other
   # create it it
   dir.create(dd, recursive = TRUE)
 }
+message("data_dir is set to: ", dd)
 # read
 acc = get_stats19(year = years, data_dir = dd, type = "acc")
 cas = get_stats19(year = years, data_dir = dd, type = "cas")
