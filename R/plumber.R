@@ -1,6 +1,11 @@
-packages <- c("sf", "geojsonsf", "curl", "data.table", "stats19")
-if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(packages, rownames(installed.packages())),repos='http://cran.us.r-project.org')
+packages <- c("sf", "geojsonsf", "curl", "data.table", "stats19", "devtools", "trafficalmr")
+p <- setdiff(packages, rownames(installed.packages()))
+if (length(p) > 0) {
+  install.packages(p,repos='http://cran.us.r-project.org')
+  if(is.element("trafficalmr")) {
+    message("Getting saferactive/trafficalmr ...")
+    devtools::install_github(saferactive/trafficalmr)
+  }
 }
 
 lapply(packages, library, character.only = TRUE)
@@ -45,18 +50,19 @@ cors <- function(res) {
 
 
 casualties = readRDS(main.file)
-casualties = casualties[,grep("accident_|lat|long|
+column_reg = "accident_|lat|long|
 vehicles|casualties|date|day_|sex_of_casualty|age_of_casualty|
 age_band_of_casualt|sex|vehicle_type|casualty_type|road_type|
 time|local_|road_cl|limit|urban|junction_det|
-class|pedestrian_crossing$|force", names(casualties))]
+class|pedestrian_crossing$|force"
+casualties = casualties[,grep(column_reg, names(casualties))]
 dt <- as.data.table(casualties)
 # leaves geometry as "sfc_POINT" "sfc"
 coordinates <- st_coordinates(dt$geometry)
 dt$lon <- coordinates[,1]
 dt$lat <- coordinates[,2]
 # casualties_geojson = geojsonsf::sf_geojson(casualties)
-limit = 10000
+limit = 20000
 
 #' #' Serve casualties data
 #' #' @get /api/stats19
@@ -91,6 +97,7 @@ walking.rnet = geojsonsf::sf_geojson(walking.rnet)
 #' @get /api/stats19/<xmin:double>/<ymin:double>/<xmax:double>/<ymax:double>
 #'
 subs_geojson <- function(res, xmin, ymin, xmax, ymax, download = ""){
+  m <- list(Error = "Error: please provide the correct values.")
   mm <- c(xmin, ymin, xmax, ymax)
   subset_geojson <- NULL
   print(mm)
@@ -112,7 +119,7 @@ subs_geojson <- function(res, xmin, ymin, xmax, ymax, download = ""){
         return(list(Message = "No records found."))
       }
       if(nrow(subset) > limit) {
-        return(list(Message = "Message: please zoom to load less data."))
+        return(list(message = "Please zoom to fetch less data."))
       }
       subset_geojson <-  geojsonsf::sf_geojson(subset)
     }
@@ -132,7 +139,8 @@ subset_dt_sf <- function(xmin, ymin, xmax, ymax){
   subdt <- data.table()
   if(exists(c('xmin', 'ymin', 'xmax', 'ymax')) &&
      !is.na(as.numeric(c(xmin, ymin, xmax, ymax)))) {
-    subdt <- acc[longitude >= xmin & longitude < xmax & latitude >= ymin & latitude < ymax, -c("lon", "lat")]
+    subdt <- acc[longitude >= xmin & longitude < xmax & latitude >= ymin & latitude < ymax]
+    subdt <- get_casualties(subdt)
   } else {
     stop("bounding box is required.")
   }
@@ -205,7 +213,7 @@ if(!dir.exists(dd)) {
   dir.create(dd, recursive = TRUE)
 }
 # read
-acc = get_stats19(year = years, data_dir = dd, type = "acc")[,1:10]
+acc = get_stats19(year = years, data_dir = dd, type = "acc")
 cas = get_stats19(year = years, data_dir = dd, type = "cas")
 veh = get_stats19(year = years, data_dir = dd, type = "veh")
 
@@ -215,6 +223,28 @@ stopifnot(all(cas$accident_index %in% acc$accident_index))
 
 # data.table
 acc = as.data.table(acc)
-cas = as.data.table(cas)
+cas = as.data.table(cas)[!is.na(casualty_type) & !is.null(casualty_type) &
+                           casualty_type %in% c("Pedestrian", "Cyclist")]
+cas$casualty_type <- tc_recode_casualties(cas$casualty_type)
 veh = as.data.table(veh)
+veh$vehicle_type <- tc_recode_vehicle_type(veh$vehicle_type)
+########### Join stats19 table   ######
+#######################################
+get_casualties <- function(acc_subset) {
+  m <- list(Error = "Error: please provide valid accident index.")
+  if(exists("acc_subset") | !is.atomic(acc_subset) |
+     !is.null(acc_subset$accident_index)) {
+    casdt <- cas[cas$accident_index %in% acc_subset$accident_index]
+    vehdt <- veh[veh$accident_index %in% acc_subset$accident_index]
+    # join 'em
+    casdt <- acc_subset[casdt, on="accident_index"]
+    casdt <- casdt[vehdt, on="accident_index"]
+    casdt <- casdt[, grep(column_reg, names(casdt)), with=FALSE]
+    # the vehicles with casualty_type NA should be eliminated?
+    casdt <- casdt[!is.na(casualty_type)]
+    return(casdt)
+  } else {
+    return(m)
+  }
+}
 print(proc.time() - ptm)
