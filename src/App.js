@@ -7,7 +7,6 @@ import { Switch, Route } from 'react-router-dom';
 import Welcome from './Welcome';
 import Header from './components/Header';
 import About from './About';
-import DynamicImport from './components/DynamicImport';
 
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider, LightTheme, DarkTheme } from 'baseui';
