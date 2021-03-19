@@ -1,7 +1,7 @@
 ---
 output: github_document
 ---
-<!-- # eAtlas &middot; [![Build Status](https://travis-ci.org/layik/eAtlas.svg)](https://travis-ci.org/layik/eAtlas) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#) -->
+# saferactive-eatlas &middot; [![Check valid plumber.R file](https://github.com/saferactive/saferactive-eatlas/actions/workflows/quick-R.yml/badge.svg)](https://github.com/saferactive/saferactive-eatlas/actions/workflows/quick-R.yml) [![Node.js CI](https://github.com/saferactive/saferactive-eatlas/actions/workflows/npm-test.yml/badge.svg)](https://github.com/saferactive/saferactive-eatlas/actions/workflows/npm-test.yml) [![Publish Docker image](https://github.com/saferactive/saferactive-eatlas/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/saferactive/saferactive-eatlas/actions/workflows/docker-image.yml) [![Deploy to github pages](https://github.com/saferactive/saferactive-eatlas/actions/workflows/gh-pages.yml/badge.svg?branch=gh-source)](https://github.com/saferactive/saferactive-eatlas/actions/workflows/gh-pages.yml) 
 
 This is custom fork of Turing Geovisualization Engine or eAtlas for short. eAtlas is a [geoplumber](https://github.com/ATFutures/geoplumber) app with scripts to run either as backend only, frontend only or as a Docker image for production.
 
