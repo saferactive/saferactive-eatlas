@@ -428,7 +428,7 @@ const percentDiv = (title, left, cb, dark, n = 3) => {
 const isURL = (str) => {
   var a = document.createElement('a');
   a.href = str;
-  return (a.host && a.host !== window.location.host);
+  return (a.protocol && a.hostname);
 }
 
 const isMobile = function () {

@@ -60,6 +60,19 @@ exports[`App - should create snapshot 1`] = `
               About
             </a>
           </li>
+          <li
+            className=""
+            role="presentation"
+          >
+            <a
+              href="#"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+            >
+              v0.1
+            </a>
+          </li>
         </ul>
         <ul
           className="nav navbar-nav navbar-right"
@@ -70,7 +83,7 @@ exports[`App - should create snapshot 1`] = `
             role="presentation"
           >
             <a
-              href="https://github.com/layik/eAtlas"
+              href="https://github.com/saferactive"
               onClick={[Function]}
               onKeyDown={[Function]}
             >
@@ -204,20 +217,10 @@ exports[`App - should create snapshot 1`] = `
             }
           >
             <h2>
-              Nothing to show
+              Loading...
             </h2>
-            dataset: 
-            /api/stats19
           </div>
           <div>
-            <button
-              className="ae af ag ah ai aj ak al am an ao ap aq ar as at au av aw ax ay az b0 b1 b2 b3 b4 b5 b6 b7 b8 b9 ba bb bc bd"
-              data-baseweb="button"
-              disabled={false}
-              onClick={[Function]}
-            >
-              Add data
-            </button>
             <i
               className="fa fa-table"
               onClick={[Function]}
@@ -245,26 +248,19 @@ exports[`App - should create snapshot 1`] = `
                 }
               />
               <div
-                aria-label="button group"
-                className="be"
-                data-baseweb="button-group"
+                className="checkbox"
               >
-                <button
-                  className="ae af ag ah ai aj ak al am an ao ap aq ar as at au av aw ax bf az b0 bg bh b3 b4 bi bj bk bl b9 bm"
-                  data-baseweb="button"
-                  disabled={false}
-                  onClick={[Function]}
+                <label
+                  title=""
                 >
-                  Casualties
-                </button>
-                <button
-                  className="ae af ag ah ai aj ak al am an ao ap aq ar as at au av aw ax bf az b0 b1 b2 bn bo bi bj bk bl b9 bp bq br bs"
-                  data-baseweb="button"
-                  disabled={false}
-                  onClick={[Function]}
-                >
-                  Walking
-                </button>
+                  <input
+                    checked={true}
+                    disabled={false}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                  Subset by map boundary
+                </label>
               </div>
               <div
                 id="main-tabs"
@@ -341,7 +337,11 @@ exports[`App - should create snapshot 1`] = `
                             "fontSize": "2rem",
                           }
                         }
-                      />
+                      >
+                         
+                        0
+                         
+                      </i>
                     </a>
                   </li>
                 </ul>
@@ -493,34 +493,6 @@ exports[`App - should create snapshot 1`] = `
                           </a>
                         </li>
                       </ul>
-                    </div>
-                    <div
-                      className="checkbox"
-                    >
-                      <label
-                        title=""
-                      >
-                        <input
-                          disabled={false}
-                          onChange={[Function]}
-                          type="checkbox"
-                        />
-                        Hex Plot
-                      </label>
-                    </div>
-                    <div
-                      className="checkbox"
-                    >
-                      <label
-                        title=""
-                      >
-                        <input
-                          disabled={false}
-                          onChange={[Function]}
-                          type="checkbox"
-                        />
-                        Subset by map boundary
-                      </label>
                     </div>
                   </div>
                   <div

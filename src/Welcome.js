@@ -106,7 +106,7 @@ export default class Welcome extends React.Component {
     this._fitViewport = this._fitViewport.bind(this);
     this._updateURL = this._updateURL.bind(this);
     // TODO: can let user change the 300
-    this._myThrottle = throttle((v) => this._updateURL(v), 300)
+    this._throttleUR = throttle((v) => this._updateURL(v), 300)
   }
 
   componentDidMount() {
@@ -132,7 +132,7 @@ export default class Welcome extends React.Component {
       aURL : // do not get the server to parse it 
       URL + defualtURL + "/0/0/0/0"; // 0/0/0/0 is the default bounding
       // no ending slash by choice for this versio of plumber
-
+    this.setState({ loading: true });
     fetchData(fullURL, (data, error) => {
       if (!error && data.features) {
         this.setState({
@@ -380,7 +380,6 @@ export default class Welcome extends React.Component {
     const bounds = this.map && this.map.getBounds();
     // console.log(bounds, subsetBoundsChange);
     if (bounds && subsetBoundsChange) {
-      this.setState({ loading: true });
       const box = getBbx(bounds);
       // console.log("bounds", box);
       // we need some margins int he user's view
@@ -418,7 +417,7 @@ export default class Welcome extends React.Component {
           }}
           mapStyle={mapStyle}
           onViewportChange={(viewport) => {
-            this._myThrottle(viewport)
+            this._throttleUR(viewport)
             this.setState({ viewport })
           }}
           // see
@@ -564,5 +563,4 @@ export default class Welcome extends React.Component {
       </div>
     );
   }
-  _myThrottle
 }
