@@ -17,7 +17,8 @@ import { LineSeries, VerticalBarSeries } from 'react-vis';
 import Variables from '../Variables';
 import RBAlert from '../RBAlert';
 import { propertyCount } from '../../geojsonutils';
-import { DEV_URL, PRD_URL, LAYERSTYLES } from '../../Constants';
+import { DEV_URL, PRD_URL, LAYERSTYLES, RADIUS, ELEVATION }
+  from '../../Constants';
 import ColorPicker from '../ColourPicker';
 import Modal from '../Modal';
 import DataTable from '../Table';
@@ -34,8 +35,8 @@ export default class DeckSidebar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      radius: 100,
-      elevation: 4,
+      radius: RADIUS,
+      elevation: ELEVATION,
       year: "",
       reset: false,
       multiVarSelect: {},
