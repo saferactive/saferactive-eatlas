@@ -1,7 +1,7 @@
 name: Publish Docker image
 on:
   push:
-    branches: [ master ]
+    branches: [ dev ]
 
 jobs:
   push_to_registry:
@@ -16,5 +16,5 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: saferactive/saferactive-eatlas/sa-eatlas
+          repository: saferactive/saferactive-eatlas/sa-eatlas-dev
           tag_with_ref: true
