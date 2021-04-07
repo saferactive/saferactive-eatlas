@@ -39,7 +39,7 @@ function Header(props) {
               )
             })
           }
-          <NavItem>v0.1</NavItem>
+          <NavItem>Beta</NavItem>
         </Nav>
         {/* trick RB with navbar-nav > li a but do it like following*/}
         {/* <div className="nav navbar-nav">

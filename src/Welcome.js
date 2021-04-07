@@ -90,15 +90,16 @@ export default class Welcome extends React.Component {
       loading: true,
       layers: [],
       backgroundImage: gradient.backgroundImage,
-      radius: 100,
-      elevation: 4,
+      radius: Constants.RADIUS,
+      elevation: Constants.ELEVATION,
       mapStyle: MAPBOX_ACCESS_TOKEN ? ("mapbox://styles/mapbox/" +
         (props.dark ? "dark" : "streets") + "-v9") : OSMTILES,
       initialViewState: init,
       subsetBoundsChange: true,
       colourName: 'default',
       iconLimit: 500,
-      legend: false
+      legend: false,
+      multiVarSelect: {}
     }
     this._generateLayer = this._generateLayer.bind(this)
     this._renderTooltip = this._renderTooltip.bind(this);
@@ -168,15 +169,17 @@ export default class Welcome extends React.Component {
     const { radius, elevation, filter, cn } = values;
 
     if (filter && filter.what === 'mapstyle') {
+      const newStyle = "mapbox://styles/mapbox/" + filter.selected + "-v9";
       this.setState({
         mapStyle: !MAPBOX_ACCESS_TOKEN ? OSMTILES :
-          filter && filter.what === 'mapstyle' ? "mapbox://styles/mapbox/" + filter.selected + "-v9" : this.state.mapStyle,
+          filter && filter.what === 'mapstyle' ?  filter.selected === "No map" ?
+          Constants.BLANKSTYLE : newStyle : this.state.mapStyle,
       })
       return;
     }
     let data = this.state.data && this.state.data.features
     if (!data) return;
-    const { colourName, iconLimit } = this.state;
+    const { colourName, iconLimit, multiVarSelect } = this.state;
     let column = (filter && filter.what === 'column' && filter.selected) ||
       this.state.column;
     if (filter && filter.what === "%") {
@@ -188,12 +191,15 @@ export default class Welcome extends React.Component {
     }
     const geomType = sfType(data[0]).toLowerCase();
     //if resetting a value
-    if (filter && filter.selected !== "") {
+    const filterValues = filter && filter.what === 'multi' ||
+      Object.keys(multiVarSelect).length;
+    const filterCoords = filter && filter.what === 'coords';
+    const selected = filter && filter.selected || multiVarSelect;
+    if (filterValues || filterCoords) {
       data = data.filter(
         d => {
-          if (filter.what === 'multi') {
+          if (filterValues) {
             // go through each selection
-            const selected = filter.selected;
             // selected.var > Set()
             for (let each of Object.keys(selected)) {
               const nextValue = each === "date" ?
@@ -208,7 +214,7 @@ export default class Welcome extends React.Component {
               }
             }
           }
-          if (filter.what === 'coords') {
+          if (filterCoords) {
             // coords in 
             if (_.difference(filter.selected || this.state.coords,
               d.geometry.coordinates.flat()).length !== 0) {
@@ -223,7 +229,7 @@ export default class Welcome extends React.Component {
     let layerStyle = (filter && filter.what ===
       'layerStyle' && filter.selected) || this.state.layerStyle || 'grid';
     if (geomType !== "point") layerStyle = "geojson";
-    const switchToIcon = data.length < iconLimit && !column && 
+    const switchToIcon = data.length < iconLimit && !this.state.layerStyle && 
     (!filter || filter.what !== 'layerStyle') && geomType === "point";
     if (switchToIcon) layerStyle = 'icon';
     const options = {
@@ -308,7 +314,10 @@ export default class Welcome extends React.Component {
       loading: false,
       // do not save if not given else leave it as it is
       layerStyle: filter && filter.what ===
-        'layerStyle' ? filter.selected : this.state.layerStyle,  
+        'layerStyle' ? filter.selected : this.state.layerStyle,
+      // do not save if not given etc
+      multiVarSelect: filter && filter.what === "multi" ? 
+      filter.selected : multiVarSelect,
       geomType,
       tooltip: "",
       filtered: data,
@@ -517,8 +526,8 @@ export default class Welcome extends React.Component {
             this.setState({
               tooltip: "",
               road_type: "",
-              radius: 100,
-              elevation: 4,
+              radius: Constants.RADIUS,
+              elevation: Constants.ELEVATION,
               loading: true,
               coords: null
             })

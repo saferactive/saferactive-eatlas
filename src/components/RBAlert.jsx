@@ -48,6 +48,12 @@ class ToastAlert extends Component {
     else {
       return (
         <Alert style={{
+          position: 'absolute',
+          maxWidth: 260,
+          minWidth: 260,
+          overflow: 'hidden',
+          wordBreak: true,
+          zIndex: 1e5,
           border: 'none',
           background: '#f8d7da',
           color: '#721c24',
