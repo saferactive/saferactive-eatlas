@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/saferactive-eatlas/static/css/main.bb6a7822.chunk.css",
+    "main.js": "/saferactive-eatlas/static/js/main.c9738c81.chunk.js",
+    "main.js.map": "/saferactive-eatlas/static/js/main.c9738c81.chunk.js.map",
+    "runtime-main.js": "/saferactive-eatlas/static/js/runtime-main.acd52ef0.js",
+    "runtime-main.js.map": "/saferactive-eatlas/static/js/runtime-main.acd52ef0.js.map",
+    "static/css/2.5a2f7233.chunk.css": "/saferactive-eatlas/static/css/2.5a2f7233.chunk.css",
+    "static/js/2.17f31257.chunk.js": "/saferactive-eatlas/static/js/2.17f31257.chunk.js",
+    "static/js/2.17f31257.chunk.js.map": "/saferactive-eatlas/static/js/2.17f31257.chunk.js.map",
+    "index.html": "/saferactive-eatlas/index.html",
+    "precache-manifest.87798fffe3f11cef2283c97fae7e1b94.js": "/saferactive-eatlas/precache-manifest.87798fffe3f11cef2283c97fae7e1b94.js",
+    "service-worker.js": "/saferactive-eatlas/service-worker.js",
+    "static/css/2.5a2f7233.chunk.css.map": "/saferactive-eatlas/static/css/2.5a2f7233.chunk.css.map",
+    "static/css/main.bb6a7822.chunk.css.map": "/saferactive-eatlas/static/css/main.bb6a7822.chunk.css.map",
+    "static/js/2.17f31257.chunk.js.LICENSE.txt": "/saferactive-eatlas/static/js/2.17f31257.chunk.js.LICENSE.txt",
+    "static/media/icons.png": "/saferactive-eatlas/static/media/icons.4a1946be.png",
+    "static/media/notes.md": "/saferactive-eatlas/static/media/notes.ed02f619.md"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.acd52ef0.js",
+    "static/css/2.5a2f7233.chunk.css",
+    "static/js/2.17f31257.chunk.js",
+    "static/css/main.bb6a7822.chunk.css",
+    "static/js/main.c9738c81.chunk.js"
+  ]
+}
