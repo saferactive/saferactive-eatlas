@@ -7,11 +7,11 @@ on:
 jobs:
   Rscript:
     runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
-        env: 
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - name: install plumber deps
         run: brew update && brew install libsodium udunits pkg-config gdal
       - name: Rscript plumber.R
