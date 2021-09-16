@@ -10,9 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
-      - uses: actions/labeler@v2
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env: 
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - name: install plumber deps
         run: brew update && brew install libsodium udunits pkg-config gdal
       - name: Rscript plumber.R
