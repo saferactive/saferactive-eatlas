@@ -29,7 +29,7 @@ import {
   getParamsFromSearch, getBbx,
   isMobile, colorScale, 
   colorRanges, addLayerToMap, OSMTILES,
-  convertRange, getMin, getMax, isURL
+  convertRange, getMin, getMax, isURL, updateHistory
 } from './utils';
 import Constants from './Constants';
 import DeckSidebarContainer from
@@ -373,15 +373,7 @@ export default class Welcome extends React.Component {
   }
 
   _updateURL(viewport) {
-    const { latitude, longitude, zoom, bearing, pitch, altitude } = viewport;
-    history.push(
-      `/?lat=${latitude.toFixed(3)}` +
-      `&lng=${longitude.toFixed(3)}` +
-      `&zoom=${zoom.toFixed(2)}` +
-      `&bea=${bearing}` +
-      `&pit=${pitch}` +
-      `&alt=${altitude}`
-    )
+    updateHistory(viewport)
   }
 
   _fetchDataWithBounds() {

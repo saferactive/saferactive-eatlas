@@ -17,6 +17,7 @@ import Constants from './Constants';
 import { isString, isNumber } from './JSUtils.js';
 import IconClusterLayer from './icon-cluster-layer';
 import { ArcLayer, PathLayer } from '@deck.gl/layers';
+import history from './history';
 
 const getResultsFromGoogleMaps = (string, callback) => {
 
@@ -737,6 +738,32 @@ const OSMTILES = {
   }]
 };
 
+/**
+ * Gently update browser history using a DeckGL/mapbox
+ * viewport object.
+ * 
+ * @param {*} viewport 
+ * @returns 
+ */
+ const updateHistory = (viewport) => {
+  if(!viewport) return;
+  const { latitude, longitude, zoom, bearing, pitch, altitude } = viewport;
+  // TODO only update those that are given
+  const search = `?lat=${latitude.toFixed(3)}` +
+    `&lng=${longitude.toFixed(3)}` +
+    `&zoom=${zoom.toFixed(2)}` +
+    `&bea=${bearing}` +
+    `&pit=${pitch}` +
+    `&alt=${altitude}`;
+  const entry = {
+    pathname: history.location.pathname,
+    search
+  };
+  !history.location.search ?
+    // there is at least one service which behaves this way
+    history.push(entry) : history.replace(entry);
+}
+
 export {
   getResultsFromGoogleMaps,
   getParamsFromSearch,
@@ -750,6 +777,7 @@ export {
   generateLegend,
   generateDomain,
   addLayerToMap,
+  updateHistory,
   convertRange,
   getCentroid,
   shortenName,
